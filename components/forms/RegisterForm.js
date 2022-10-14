@@ -1,7 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
-import { ErrorBanner } from "../Banner";
+import { ErrorBanner, SuccessBanner } from "../Banner";
 
 export default function Loginform() {
 
@@ -13,21 +13,30 @@ export default function Loginform() {
     password: "",
     buttonText: "Register",
     error: "",
+    success: ""
   });
 
-  const { firstname, lastname, username, email, password, buttonText, error } = state;
+  const { firstname, lastname, username, email, password, buttonText, error, success } = state;
 
   const updateValues = (value) => {
     return (e) => {
       setState({
-        ...state, [value]: e.target.value, error: "", buttonText: "Register"
+        ...state, [value]: e.target.value, error: "", success: "", buttonText: "Register"
       });
     };
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:8000/api/v1/auth/signup`, { firstname, lastname, username, email, password }).then(response => console.log(response.data)).catch(err => console.log(err.response.data));
+    axios.post(`http://localhost:8000/api/v1/auth/signup`, { firstname, lastname, username, email, password })
+      .then(response => {
+        console.log(response.data);
+        setState({ ...state, success: response.data.message, error: "", buttonText: "Register" });
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        setState({ ...state, error: err.response.data.message, success: "", buttonText: "Register" });
+      });
   };
 
   return (
@@ -37,7 +46,10 @@ export default function Loginform() {
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             {error && (
-              <ErrorBanner message={error} />
+              <ErrorBanner message={state.error} />
+            )}
+            {success && (
+              <SuccessBanner message={state.success} />
             )}
             <form className="space-y-6" method="POST">
               {/* firstname  */}
