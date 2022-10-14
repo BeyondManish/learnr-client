@@ -1,7 +1,7 @@
 import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
-import { ErrorBanner } from "../Banner";
+import { ErrorBanner, SuccessBanner } from "../Banner";
 
 export default function Loginform() {
 
@@ -10,22 +10,26 @@ export default function Loginform() {
     password: "",
     buttonText: "Login",
     error: "",
+    success: "",
   });
 
-  const { email, password, error, buttonText } = state;
+  const { email, password, error, success, buttonText } = state;
 
   const updateValues = (value) => {
     return (e) => {
       setState({
-        ...state, [value]: e.target.value, error: "", buttonText: "Login"
+        ...state, [value]: e.target.value, error: "", success: "", buttonText: "Login"
       });
     };
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.table({ email, password });
-    axios.post(`http://localhost:8000/api/v1/auth/login`, { email, password }).then(response => console.log(response.data))
+    axios.post(`http://localhost:8000/api/v1/auth/login`, { email, password })
+      .then(response => {
+        console.log(response.data);
+        setState({ ...state, success: response.data.message, error: "", buttonText: "Login" });
+      })
       .catch(err => {
         console.log(err.response.data);
         setState({ ...state, error: err.response.data.message, buttonText: "Login" });
@@ -40,6 +44,9 @@ export default function Loginform() {
           <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
             {error && (
               <ErrorBanner message={state.error} />
+            )}
+            {success && (
+              <SuccessBanner message={state.success} />
             )}
             <form className="space-y-6" method="POST">
               <div>
