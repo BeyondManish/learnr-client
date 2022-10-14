@@ -1,10 +1,11 @@
 import LoginForm from "../components/forms/LoginForm";
+import MainLayout from "../components/layout/MainLayout";
 
 export default function LoginPage() {
   return (
     // Login form
-    <section>
+    <MainLayout>
       <LoginForm />
-    </section>
+    </MainLayout>
   );
 }
