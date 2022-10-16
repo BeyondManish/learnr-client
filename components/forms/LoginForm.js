@@ -32,7 +32,7 @@ export default function Loginform() {
       })
       .catch(err => {
         console.log(err.response.data);
-        setState({ ...state, error: err.response.data.message, buttonText: "Login" });
+        setState({ ...state, error: err.response.data.message || err.response.data.errors[0], buttonText: "Login" });
       });
   };
 
