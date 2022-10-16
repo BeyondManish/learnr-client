@@ -155,7 +155,7 @@ export default function AdminLayout({ children }) {
         {/* Sidebar ends */}
         <div className="flex flex-col flex-1 md:pl-64">
           {/* Admin nav */}
-          <div className="sticky top-0 z-10 flex flex-shrink-0 h-16 bg-white shadow">
+          <div className="sticky top-0 z-20 flex flex-shrink-0 h-16 bg-white shadow">
             <button
               type="button"
               className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
