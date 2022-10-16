@@ -41,7 +41,7 @@ export default function MainNav() {
       >
         {({ open }) => (
           <>
-            <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="z-20 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
               <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
                 <div className="flex md:left-0 md:inset-y-0 lg:static xl:col-span-2">
                   {/* Logo starts */}
