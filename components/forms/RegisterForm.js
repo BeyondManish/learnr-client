@@ -35,7 +35,7 @@ export default function Loginform() {
       })
       .catch(err => {
         console.log(err.response.data);
-        setState({ ...state, error: err.response.data.message, success: "", buttonText: "Register" });
+        setState({ ...state, error: err.response.data.message || err.response.data.errors[0], success: "", buttonText: "Register" });
       });
   };
 
