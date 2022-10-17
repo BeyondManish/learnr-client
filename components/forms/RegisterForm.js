@@ -1,9 +1,14 @@
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ErrorBanner, SuccessBanner } from "../Banner";
+import { useRouter } from 'next/router';
+import { AuthContext } from "../../context/Auth";
 
 export default function Loginform() {
+
+  const router = useRouter();
+  const [auth, setAuth] = useContext(AuthContext);
 
   const [state, setState] = useState({
     firstname: "",
@@ -31,11 +36,14 @@ export default function Loginform() {
     axios.post(`http://localhost:8000/api/v1/auth/signup`, { firstname, lastname, username, email, password })
       .then(response => {
         console.log(response.data);
+        setAuth({ token: response.data.token, user: response.data.data.user });
         setState({ ...state, success: response.data.message, error: "", buttonText: "Register" });
+        localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
+        router.push("/admin");
       })
       .catch(err => {
         console.log(err.response.data);
-        setState({ ...state, error: err.response.data.message || err.response.data.errors[0], success: "", buttonText: "Register" });
+        setState({ ...state, error: err.response.data.message || err.response.data.errors[0] || "", success: "", buttonText: "Register" });
       });
   };
 
