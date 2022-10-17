@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useContext } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon,
@@ -13,6 +13,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Logo from '../Logo';
+import { AuthContext } from '../../context/Auth';
+import classNames from "../../utils/classNames";
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon, current: true },
@@ -25,16 +27,12 @@ const navigation = [
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
   { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
+  { name: 'Logout', href: '/logout' },
 ];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [auth, setAuth] = useContext(AuthContext);
 
   return (
     <>
