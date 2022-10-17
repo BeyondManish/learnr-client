@@ -1,9 +1,14 @@
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ErrorBanner, SuccessBanner } from "../Banner";
+import { AuthContext } from "../../context/Auth";
+import { useRouter } from "next/router";
 
 export default function Loginform() {
+
+  const router = useRouter();
+  const [auth, setAuth] = useContext(AuthContext);
 
   const [state, setState] = useState({
     email: "",
@@ -26,12 +31,14 @@ export default function Loginform() {
   const submitForm = (e) => {
     e.preventDefault();
     axios.post(`http://localhost:8000/api/v1/auth/login`, { email, password })
-      .then(response => {
-        console.log(response.data);
+      .then((response) => {
+        setAuth({ token: response.data.token, user: response.data.data.user });
+        localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
         setState({ ...state, success: response.data.message, error: "", buttonText: "Login" });
+        router.push("/admin");
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err);
         setState({ ...state, error: err.response.data.message || err.response.data.errors[0], buttonText: "Login" });
       });
   };
@@ -61,7 +68,7 @@ export default function Loginform() {
                     name="email"
                     type="email"
                     autoComplete="email"
-                    required
+                    required={true}
                     className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
@@ -79,7 +86,7 @@ export default function Loginform() {
                     name="password"
                     type="password"
                     autoComplete="current-password"
-                    required
+                    minLength={8}
                     className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
