@@ -1,13 +1,16 @@
 import AdminLayout from "../../../components/layout/AdminLayout";
 import Editor from "rich-markdown-editor";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import MultiSelect from "../../../components/forms/MultiSelect";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
 import Link from "next/link";
 
+import { AuthContext } from "../../../context/Auth";
 
 export default function CreatePostPage() {
+  const auth = useContext(AuthContext);
+
 
   const categories = [
     { id: 1, name: 'React' },
