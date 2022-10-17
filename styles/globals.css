@@ -8,7 +8,7 @@
 
 /* for the rich markdown editor */
 .ProseMirror {
-  @apply min-h-[500px] px-7 py-2;
+  @apply min-h-[500px] px-7 py-4;
 }
 
 .ProseMirror-widget {
