@@ -1,8 +1,9 @@
 import { Html, Head, NextScript, Main } from 'next/document';
 
 export default function Document() {
+
   return (
-    <Html lang='en' className='h-full'>
+    <Html lang='en' className="h-full">
       <Head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css"></link>
       </Head>
