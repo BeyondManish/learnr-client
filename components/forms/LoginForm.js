@@ -30,12 +30,12 @@ export default function Loginform() {
 
   const submitForm = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:8000/api/v1/auth/login`, { email, password })
+    axios.post(`/auth/login`, { email, password })
       .then((response) => {
         setAuth({ token: response.data.token, user: response.data.data.user });
         localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
         setState({ ...state, success: response.data.message, error: "", buttonText: "Login" });
-        router.push("/admin");
+        router.push("/admin/dashboard");
       })
       .catch(err => {
         console.log(err);
