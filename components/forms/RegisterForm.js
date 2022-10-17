@@ -33,13 +33,14 @@ export default function Loginform() {
 
   const submitForm = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:8000/api/v1/auth/signup`, { firstname, lastname, username, email, password })
+    axios.post(`/auth/signup`, { firstname, lastname, username, email, password })
       .then(response => {
         console.log(response.data);
         setAuth({ token: response.data.token, user: response.data.data.user });
         setState({ ...state, success: response.data.message, error: "", buttonText: "Register" });
         localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
-        router.push("/admin");
+        // redirect to admin dashboard
+        router.push("/admin/dashboard");
       })
       .catch(err => {
         console.log(err.response.data);
