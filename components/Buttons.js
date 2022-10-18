@@ -1,3 +1,7 @@
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import { useContext, useEffect } from 'react';
+import { ThemeContext } from "../context/Theme";
+
 export function Button({ className, icon, text }) {
   return (<button
     type="button"
@@ -9,4 +13,24 @@ export function Button({ className, icon, text }) {
     }
     {text}
   </button>);
+}
+
+export function ToggleButton() {
+
+  const [theme, toggleTheme] = useContext(ThemeContext);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.toggle("dark");
+  }, [theme]);
+
+
+  return (
+    <button onClick={toggleTheme} className='w-8 h-8 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700'>
+      {
+        theme == "light" ? <SunIcon />
+          : <MoonIcon />
+      }
+    </button>
+  );
 }
