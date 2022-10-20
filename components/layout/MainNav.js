@@ -3,6 +3,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Logo from '../Logo';
+import { ToggleButton } from '../Buttons';
 
 const user = {
   name: 'Chelsea Hagon',
@@ -35,7 +36,7 @@ export default function MainNav() {
         className={({ open }) =>
           classNames(
             open ? 'absolute inset-0 z-40 overflow-y-auto' : '',
-            'bg-white absolute inset-x-0 top-0 lg:overflow-y-visible shadow-sm'
+            'bg-white dark:bg-gray-900 absolute inset-x-0 top-0 lg:overflow-y-visible shadow-sm'
           )
         }
       >
@@ -63,7 +64,7 @@ export default function MainNav() {
                         <input
                           id="search"
                           name="search"
-                          className="block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          className="block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:placeholder-gray-400 dark:bg-gray-600 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           placeholder="Search"
                           type="search"
                         />
@@ -85,19 +86,21 @@ export default function MainNav() {
                 <div className="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
                   <Link href="/login">
                     <a
-                      className="inline-flex items-center px-4 py-2 ml-6 text-sm font-medium border border-transparent rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex items-center px-4 py-2 ml-4 text-sm font-medium border border-transparent rounded-md hover:bg-gray-200 hover:dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Login
                     </a>
                   </Link>
                   <Link href="/register">
                     <a
-                      className="inline-flex items-center px-4 py-2 ml-6 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      className="inline-flex items-center px-4 py-2 ml-4 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Register
                     </a>
                   </Link>
-
+                  <div className='ml-4'>
+                    <ToggleButton />
+                  </div>
                 </div>
               </div>
             </div>
