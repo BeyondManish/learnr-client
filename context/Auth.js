@@ -18,9 +18,15 @@ export function AuthProvider({ children }) {
   // configure axios defaults
   if (process.server) {
     axios.defaults.baseURL = process.env.API; // the client is running in server
+    axios.defaults.headers.common = {
+      "Authorization": `Bearer ${auth.token}`
+    };
   } else {
     axios.defaults.baseURL = process.env.NEXT_PUBLIC_API;
-  }
+    axios.defaults.headers.common = {
+      "Authorization": `Bearer ${auth.token}`
+    };
+  };
 
   return (
     <AuthContext.Provider value={[auth, setAuth]}>
