@@ -1,12 +1,11 @@
 import { Fragment, useState } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/solid';
-import Badge from '../Badges';
+import { BadgeWithCrossButton } from '../Badges';
 import classNames from "../../utils/classNames";
 
 export default function MultiSelect({ label, values }) {
   const [selected, setSelected] = useState([]);
-  console.log(selected);
 
   return (
     <Listbox value={selected} onChange={setSelected} multiple={true}>
@@ -14,10 +13,10 @@ export default function MultiSelect({ label, values }) {
         <>
           <Listbox.Label className="block text-sm font-medium text-gray-700">{label}</Listbox.Label>
           <div className="relative mt-1">
-            <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <Listbox.Button as="div" className="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
               {
                 selected.length > 0 ?
-                  selected.map((value) => <Badge key={value} name={value} onClick={(e) => { e.stopPropagation(); setSelected(selected.filter(item => item != value)); }} />)
+                  selected.map((value) => <BadgeWithCrossButton key={value} name={value} onClick={(e) => { e.stopPropagation(); setSelected(selected.filter(item => item != value)); }} />)
                   : <span className="block truncate">Select {label}</span>
               }
 
