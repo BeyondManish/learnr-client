@@ -5,8 +5,35 @@ import MultiSelect from "../../../components/forms/MultiSelect";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
 import Link from "next/link";
+import Resizer from 'react-image-file-resizer';
 
 import { AuthContext } from "../../../context/Auth";
+
+const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      720,
+      400,
+      "JPEG",
+      100,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      "base64"
+    );
+  });
+
+const uploadImage = async (file) => {
+  try {
+    const image = await resizeFile(file);
+    console.log(image);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 export default function CreatePostPage() {
   const auth = useContext(AuthContext);
@@ -65,7 +92,9 @@ export default function CreatePostPage() {
               onChange={(value) => {
                 setContent(value());
                 localStorage.setItem("postContent", JSON.stringify(value()));
-              }} />
+              }}
+              uploadImage={(file) => uploadImage(file)}
+            />
           </div>
           <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
             <div className="mb-4">
