@@ -1,27 +1,31 @@
 import { Fragment, useState, useContext } from 'react';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react';
 import {
   BellIcon,
-  CalendarIcon,
   ChartBarIcon,
-  FolderIcon,
   HomeIcon,
-  InboxIcon,
   Bars3Icon,
-  UsersIcon,
   XMarkIcon,
+  PencilSquareIcon,
+  ClipboardDocumentIcon,
+  ChevronRightIcon,
+  TagIcon,
+  PhotoIcon,
+  ChatBubbleBottomCenterTextIcon,
+  ClipboardDocumentListIcon
 } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Logo from '../Logo';
 import { AuthContext } from '../../context/Auth';
 import classNames from "../../utils/classNames";
+import { ToggleButton } from "../Buttons";
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon, current: true },
-  { name: 'Posts', href: '/admin/post', icon: UsersIcon, current: false },
-  { name: 'Categories', href: '/admin/categories', icon: FolderIcon, current: false },
-  { name: 'Media', href: '/admin/media', icon: CalendarIcon, current: false },
-  { name: 'Comments', href: '/admin/comments', icon: InboxIcon, current: false },
+  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, current: false, children: [{ name: "Create", icon: PencilSquareIcon, href: "/admin/posts/create", current: false }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/admin/posts", current: false }] },
+  { name: 'Categories', href: '/admin/categories', icon: TagIcon, current: false },
+  { name: 'Media', href: '/admin/media', icon: PhotoIcon, current: false },
+  { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon, current: false },
   { name: 'Reports', href: '/admin/reports', icon: ChartBarIcon, current: false },
 ];
 const userNavigation = [
@@ -87,15 +91,16 @@ export default function AdminLayout({ children }) {
                 <div className="flex-1 h-0 mt-5 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map((item) => (
-                      <a
+                      < a
                         key={item.name}
                         href={item.href}
-                        className={classNames(
-                          item.current
-                            ? 'bg-gray-100 text-gray-900'
-                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                        )}
+                        className={
+                          classNames(
+                            item.current
+                              ? 'bg-gray-100 text-gray-900'
+                              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                            'group flex items-center px-2 py-2 text-base font-medium rounded-md'
+                          )}
                       >
                         <item.icon
                           className={classNames(
@@ -128,23 +133,77 @@ export default function AdminLayout({ children }) {
             <div className="flex flex-col flex-grow mt-5">
               <nav className="flex-1 px-2 pb-4 space-y-1">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                    )}
-                  >
-                    <item.icon
-                      className={classNames(
-                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                        'mr-3 flex-shrink-0 h-6 w-6'
+                  item.children ?
+                    <Disclosure defaultOpen={true}>
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button className={`w-full`}>
+                            <a
+                              key={item.name}
+                              href={item.href}
+                              className={classNames(
+                                item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50',
+                                'group flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md'
+                              )}
+                            >
+                              <div className='flex items-center justify-center'>
+                                <item.icon
+                                  className={classNames(
+                                    item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                    'mr-3 flex-shrink-0 h-6 w-6'
+                                  )}
+                                  aria-hidden="true"
+                                />
+                                {item.name}
+                              </div>
+
+                              <div className='flex items-center justify-center w-5 h-5'>
+                                <ChevronRightIcon className={classNames(open ? 'rotate-90 transform' : '', 'w-4 h-4')} />
+                              </div>
+                            </a>
+                          </Disclosure.Button>
+                          <Disclosure.Panel>
+                            {item.children.map(item => (
+                              <a
+                                key={item.name}
+                                href={item.href}
+                                className={classNames(
+                                  item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                  'group flex items-center pl-6 pr-2 py-2 text-sm font-medium rounded-md'
+                                )}
+                              >
+                                <item.icon
+                                  className={classNames(
+                                    item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                    'mr-3 flex-shrink-0 h-6 w-6'
+                                  )}
+                                  aria-hidden="true"
+                                />
+                                {item.name}
+                              </a>
+                            ))}
+                          </Disclosure.Panel>
+                        </>
                       )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </a>
+
+                    </Disclosure> :
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={classNames(
+                        item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                      )}
+                    >
+                      <item.icon
+                        className={classNames(
+                          item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                          'mr-3 flex-shrink-0 h-6 w-6'
+                        )}
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </a>
                 ))}
               </nav>
             </div>
@@ -192,7 +251,7 @@ export default function AdminLayout({ children }) {
                 </button>
 
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+                <Menu as="div" className="relative mx-3">
                   <div>
                     <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                       <span className="sr-only">Open user menu</span>
