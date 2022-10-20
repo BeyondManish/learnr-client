@@ -19,12 +19,6 @@ export function ToggleButton() {
 
   const [theme, toggleTheme] = useContext(ThemeContext);
 
-  useEffect(() => {
-    const html = document.documentElement;
-    html.classList.toggle("dark");
-  }, [theme]);
-
-
   return (
     <button onClick={toggleTheme} className='w-8 h-8 p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700'>
       {
