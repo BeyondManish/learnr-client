@@ -1,4 +1,4 @@
-export default function Badge({ name, onClick }) {
+export function BadgeWithCrossButton({ name, onClick }) {
   return (
     <span className="inline-flex rounded-full items-center py-0.5 pl-2.5 pr-1 text-sm font-medium bg-indigo-100 text-indigo-700 mr-2">
       {name}
@@ -12,6 +12,14 @@ export default function Badge({ name, onClick }) {
           <path strokeLinecap="round" strokeWidth="1.5" d="M1 1l6 6m0-6L1 7" />
         </svg>
       </button>
+    </span>
+  );
+}
+
+export function Badge({ title }) {
+  return (
+    <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-200 text-gray-800">
+      {title}
     </span>
   );
 }
