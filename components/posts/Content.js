@@ -7,7 +7,7 @@ export default function Content({ title, categories, featuredImage }) {
     <div className="max-w-3xl mx-auto mt-16 overflow-hidden bg-white border border-gray-300 rounded-lg dark:border dark:border-gray-900 dark:bg-gray-900 md:mt-20">
       {
         featuredImage && (
-          <Image clasName="w-full" src={featuredImage} layout="responsive" width={720} height={400} />
+          <Image className="w-full" src={featuredImage} layout="responsive" width={720} height={400} />
         )
       }
       <div className="p-8">
