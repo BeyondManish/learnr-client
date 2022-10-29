@@ -18,17 +18,21 @@ export default function CategoriesAdminPage() {
 
   const submitFrom = (e) => {
     e.preventDefault();
-    axios.post(`category/create`, { name }).then((response) => setState({ ...state, success: response.data.message, error: "" }))
-      .catch((err) => { console.log(err.response.data); setState({ ...state, error: err.response.data.message, success: "" }); });
+    axios.post(`category/create`, { name })
+      .then((response) => setState({ ...state, success: response.data.message, error: "" }))
+      .catch((err) => {
+        console.log(err.response.data);
+        setState({ ...state, error: err.response.data.message || err.response.data.errors[0], success: "" });
+      });
   };
 
   return (
     <AdminLayout>
       <h1 className="mb-4 text-xl font-semibold">Categories</h1>
       {/* Create categories form */}
-      <div className="p-6 bg-white rounded-md">
+      <div className="p-6 bg-white rounded-md w-[50%]">
         <form>
-          <div className="w-full lg:max-w-[70%]">
+          <div className="w-full">
             {error && (
               <ErrorBanner message={state.error} />
             )}
@@ -46,7 +50,7 @@ export default function CategoriesAdminPage() {
               onChange={updateValues}
               name="category"
               id="category"
-              className="block border-gray-300 rounded-md shadow-sm w-full lg:max-w-[70%] focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Data Science"
             />
           </div>
