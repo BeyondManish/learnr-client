@@ -2,8 +2,9 @@ import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from "../context/Theme";
 
-export function Button({ className, icon, text }) {
+export function Button({ className, icon, text, onClick }) {
   return (<button
+    onClick={onClick}
     type="button"
     className={`inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500` + className}
   > {
