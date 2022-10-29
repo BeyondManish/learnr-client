@@ -42,7 +42,7 @@ export default function AdminLayout({ children }) {
     <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="fixed inset-0 z-40 flex md:hidden" onClose={setSidebarOpen}>
+          <Dialog as="div" className="fixed inset-0 z-20 flex md:hidden" onClose={setSidebarOpen}>
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -134,12 +134,11 @@ export default function AdminLayout({ children }) {
               <nav className="flex-1 px-2 pb-4 space-y-1">
                 {navigation.map((item) => (
                   item.children ?
-                    <Disclosure defaultOpen={true}>
+                    <Disclosure key={item.name} defaultOpen={true}>
                       {({ open }) => (
                         <>
                           <Disclosure.Button className={`w-full`}>
                             <a
-                              key={item.name}
                               href={item.href}
                               className={classNames(
                                 item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50',
