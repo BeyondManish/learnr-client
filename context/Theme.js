@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import localData from '../utils/localData';
 
 export const ThemeContext = createContext();
 
@@ -6,7 +7,7 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("light");
   // TODO: Fix the dark theme toggle in reload 
   useEffect(() => {
-    setTheme(localStorage.getItem("theme") ? localStorage.getItem("theme") : "dark");
+    setTheme(localStorage.getItem('theme') === "dark" ? "light" : "dark");
     console.log(theme);
     const html = document.documentElement;
     if (theme == "dark") {
@@ -14,7 +15,7 @@ export function ThemeProvider({ children }) {
     } else {
       html.classList.remove("dark");
     }
-  }, []);
+  }, [theme]);
 
 
 
