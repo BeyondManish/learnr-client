@@ -10,8 +10,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        <div className='flex items-center justify-center h-full'>
-          <h1 className='text-2xl font-medium'>Pinterest verification: <code className='p-2 bg-gray-600 rounded-lg'>c5a67492c1c2bbc2caec4437ad6e6542</code></h1>
+        <div className='flex items-center justify-center h-full text-gray-900 dark:text-gray-100'>
+          <h1 className='text-2xl font-medium'>Pinterest verification: <code className='p-2 bg-gray-300 rounded-lg dark:bg-gray-600'>c5a67492c1c2bbc2caec4437ad6e6542</code></h1>
         </div>
       </MainLayout>
     </div>
