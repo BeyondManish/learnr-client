@@ -14,3 +14,11 @@
 .ProseMirror-widget {
   @apply pr-1;
 }
+
+.sc-bcXHqe {
+  @apply overflow-hidden border border-gray-300 rounded-md shadow-sm;
+}
+
+__next > div {
+  @apply h-full;
+}
