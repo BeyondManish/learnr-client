@@ -1,6 +1,6 @@
 export function BadgeWithCrossButton({ name, onClick }) {
   return (
-    <span className="inline-flex rounded-full items-center py-0.5 pl-2.5 pr-1 text-sm font-medium bg-indigo-100 text-indigo-700 mr-2">
+    <span className="inline-flex rounded-full items-center py-0.5 pl-2.5 pr-1 text-sm font-medium bg-indigo-100 text-indigo-700 mr-1">
       {name}
       <button
         type="button"
