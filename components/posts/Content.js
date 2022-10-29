@@ -4,7 +4,7 @@ import { Badge } from "../Badges";
 
 export default function Content({ title, categories, featuredImage }) {
   return (
-    <div className="max-w-3xl mx-auto mt-16 overflow-hidden bg-white border border-gray-300 rounded-lg dark:border dark:border-gray-900 dark:bg-gray-900 md:mt-20">
+    <div className="max-w-3xl mx-auto mb-16 overflow-hidden bg-white border border-gray-300 rounded-lg dark:border dark:border-gray-900 dark:bg-gray-900">
       {
         featuredImage && (
           <Image className="w-full" src={featuredImage} layout="responsive" width={720} height={400} />
