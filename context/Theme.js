@@ -4,10 +4,10 @@ import localData from '../utils/localData';
 export const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState("light");
-  // TODO: Fix the dark theme toggle in reload 
+  const [theme, setTheme] = useState(localData("theme") || "light");
+  // update theme based on localStorage
   useEffect(() => {
-    setTheme(localStorage.getItem('theme') === "dark" ? "light" : "dark");
+    setTheme(theme === "dark" ? "light" : "dark");
     console.log(theme);
     const html = document.documentElement;
     if (theme == "dark") {
@@ -15,7 +15,7 @@ export function ThemeProvider({ children }) {
     } else {
       html.classList.remove("dark");
     }
-  }, [theme]);
+  }, []);
 
 
 
@@ -26,8 +26,8 @@ export function ThemeProvider({ children }) {
     } else {
       html.classList.remove("dark");
     }
-    setTheme(theme == "light" ? "dark" : "light");
-    localStorage.setItem("theme", theme);
+    setTheme(theme == "dark" ? "light" : "dark");
+    localStorage.setItem("theme", JSON.stringify(theme));
   };
 
   return (<ThemeContext.Provider value={[theme, toggleTheme]}>
