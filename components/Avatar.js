@@ -1,4 +1,4 @@
-export default function AuthorAvatar({ image }) {
+export default function Avatar({ image }) {
   return (
     <div className="w-10 h-10">
       <img

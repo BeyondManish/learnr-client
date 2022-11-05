@@ -4,13 +4,12 @@ import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { ToggleButton } from '../Buttons';
+import classNames from "../../utils/classNames";
 
 const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelsea.hagon@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+
 };
+
 const navigation = [
   { name: 'Dashboard', href: '/#', current: true },
   { name: 'Calendar', href: '/#', current: false },
@@ -23,10 +22,6 @@ const userNavigation = [
   { name: 'Sign out', href: '/#' },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export default function MainNav() {
   return (
     <>
@@ -36,13 +31,13 @@ export default function MainNav() {
         className={({ open }) =>
           classNames(
             open ? 'absolute inset-0 z-40 overflow-y-auto' : '',
-            'bg-white dark:bg-gray-900 absolute inset-x-0 top-0 lg:overflow-y-visible shadow-sm'
+            'bg-white z-50 dark:bg-gray-900 absolute inset-x-0 top-0 lg:overflow-y-visible shadow-sm'
           )
         }
       >
         {({ open }) => (
           <>
-            <div className="z-20 px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
               <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
                 <div className="flex md:left-0 md:inset-y-0 lg:static xl:col-span-2">
                   {/* Logo starts */}
