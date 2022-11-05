@@ -1,5 +1,8 @@
 import { useState } from "react";
+import axios from 'axios';
+import { ErrorBanner } from "../Banner";
 
+// TODO: Add a success banner
 export default function ForgotPasswordForm() {
 
   const [state, setState] = useState({
@@ -20,10 +23,10 @@ export default function ForgotPasswordForm() {
   const submitForm = (e) => {
     e.preventDefault();
     console.table({ email });
-    axios.post(`http://localhost:8000/api/v1/auth/forgot-password`, { email }).then(response => console.log(response.data))
+    axios.post(`http://localhost:8000/api/v1/auth/reset-password`, { email }).then(response => console.log(response.data))
       .catch(err => {
-        console.log(err.response.data);
-        setState({ ...state, error: err.response.data.message, buttonText: "Send Reset Link" });
+        console.log(err);
+        setState({ ...state, buttonText: "Send Reset Link" });
       });
   };
 
