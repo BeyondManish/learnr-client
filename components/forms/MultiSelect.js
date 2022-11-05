@@ -27,7 +27,7 @@ export default function MultiSelect({ label, values }) {
   };
 
   useEffect(() => {
-    console.log(selectedValues);
+    localStorage.setItem(`${label}`, JSON.stringify(selectedValues));
     localStorage.setItem(`${label}`, JSON.stringify(selectedValues));
   }, [selectedValues]);
 
