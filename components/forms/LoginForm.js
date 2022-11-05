@@ -32,11 +32,12 @@ export default function Loginform() {
   const submitForm = (e) => {
     e.preventDefault();
     axios.post(`/auth/login`, { email, password })
-      .then((response) => {
-        setAuth({ token: response.data.token, user: response.data.data.user });
-        localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
-        setState({ ...state, success: response.data.message, error: "", buttonText: "Login" });
-        router.push("/admin/dashboard");
+      .then((res) => {
+        setAuth({ token: res.data.token, user: res.data.data.user });
+        localStorage.setItem("auth", JSON.stringify({ token: res.data.token, user: res.data.data.user }));
+        setState({ ...state, success: res.data.message, error: "", buttonText: "Login" });
+        console.log(res.data.data.user.role);
+        res.data.data.user.role === "admin" ? router.push("/admin/dashboard") : router.push("/");
       })
       .catch(err => {
         console.log(err);
@@ -47,7 +48,7 @@ export default function Loginform() {
   return (
     <>
       {/* wrapper */}
-      <div className="flex flex-col justify-center min-h-full py-12 bg-gray-200 dark:text-gray-900 dark:bg-gray-700 sm:px-6 lg:px-8">
+      <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="px-4 py-8 bg-white shadow dark:bg-gray-900 sm:rounded-lg sm:px-10">
             {error && (
@@ -70,7 +71,7 @@ export default function Loginform() {
                     type="email"
                     autoComplete="email"
                     required={true}
-                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none dark:bg-gray-600 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -88,7 +89,7 @@ export default function Loginform() {
                     type="password"
                     autoComplete="current-password"
                     minLength={8}
-                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none dark:bg-gray-600 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
