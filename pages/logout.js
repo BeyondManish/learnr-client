@@ -13,6 +13,6 @@ export default function Logout() {
     setAuth({ user: null, token: "" });
     // redirect to homepage
     router.push('/');
-  });
+  }, []);
   return (<></>);
 }
