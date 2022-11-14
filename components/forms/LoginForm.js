@@ -2,14 +2,12 @@ import Link from "next/link";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { ErrorBanner, SuccessBanner } from "../Banner";
-import { AuthContext } from "../../context/Auth";
 import { useRouter } from "next/router";
 import SocialLogin from "../social media/SocialLogin";
 
 export default function Loginform() {
 
   const router = useRouter();
-  const [auth, setAuth] = useContext(AuthContext);
 
   const [state, setState] = useState({
     email: "",
@@ -36,11 +34,9 @@ export default function Loginform() {
         setAuth({ token: res.data.token, user: res.data.data.user });
         localStorage.setItem("auth", JSON.stringify({ token: res.data.token, user: res.data.data.user }));
         setState({ ...state, success: res.data.message, error: "", buttonText: "Login" });
-        console.log(res.data.data.user.role);
         res.data.data.user.role === "admin" ? router.push("/admin/dashboard") : router.push("/");
       })
       .catch(err => {
-        console.log(err);
         setState({ ...state, error: err.response.data.message || err.response.data.errors[0], buttonText: "Login" });
       });
   };
