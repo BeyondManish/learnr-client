@@ -6,7 +6,7 @@ import classNames from "../../utils/classNames";
 import localData from '../../utils/localData';
 
 export default function MultiSelect({ label, values }) {
-  const [selectedValues, setSelectedValues] = useState(localData(label) || []);
+  const [selectedValues, setSelectedValues] = useState(localData(label.toLowerCase()) || []);
   const [query, setQuery] = useState("");
 
   const filteredValue =
@@ -27,15 +27,14 @@ export default function MultiSelect({ label, values }) {
   };
 
   useEffect(() => {
-    localStorage.setItem(`${label}`, JSON.stringify(selectedValues));
-    localStorage.setItem(`${label}`, JSON.stringify(selectedValues));
+    localStorage.setItem(`${label.toLowerCase()}`, JSON.stringify(selectedValues));
   }, [selectedValues]);
 
   return (
     <Combobox as="div" value={selectedValues} onChange={setSelectedValues} multiple={true}>
       {({ open }) => (
         <>
-          <Combobox.Label className="block text-sm font-medium text-gray-700">{label}</Combobox.Label>
+          <Combobox.Label className="block text-sm font-medium text-gray-700 dark:text-gray-100">{label}</Combobox.Label>
           {/* list all the selected values */}
           <div className="flex flex-wrap gap-1 mt-1">
             {
@@ -48,7 +47,7 @@ export default function MultiSelect({ label, values }) {
             <Combobox.Input
               autoComplete='off'
               placeholder={`Select ${label}`}
-              className="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="relative w-full py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default focus:outline-none dark:bg-gray-900 dark:placeholder:text-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
             />
@@ -59,13 +58,13 @@ export default function MultiSelect({ label, values }) {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Combobox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Combobox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg dark:bg-gray-900 dark:text-gray-100 max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                 {filteredValue.map((value) => (
                   <Combobox.Option
                     key={value._id}
                     className={({ active }) =>
                       classNames(
-                        active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                        active ? 'text-white bg-indigo-600' : 'text-gray-900 dark:text-gray-100',
                         'cursor-default select-none relative py-2 pl-3 pr-9'
                       )
                     }
