@@ -1,41 +1,41 @@
 import AdminLayout from "../../../components/layout/AdminLayout";
 import Editor from "rich-markdown-editor";
-import { useState, useEffect, useRef, Fragment } from "react";
+import { useState, useEffect, useContext } from "react";
 import MultiSelect from "../../../components/forms/MultiSelect";
-import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
 import Link from "next/link";
+import Image from "next/image";
 import { uploadImage } from "../../../functions/upload";
 import axios from "axios";
 import { loadCategories } from "../../../functions/load";
 import { ErrorBanner, SuccessBanner } from "../../../components/Banner";
 import localData from "../../../utils/localData";
-import { Dialog, Transition } from '@headlessui/react';
 import MediaModal from "../../../components/media/MediaModal";
 import { useRouter } from "next/router";
 import Head from 'next/head';
+import { MediaContext } from "../../../context/Media";
 
 export default function CreatePostPage() {
+  const [media, setMedia] = useContext(MediaContext);
 
   const router = useRouter();
 
   const [title, setTitle] = useState(localData('postTitle') || "");
   const [content, setContent] = useState(localData('postContent') || "");
-  const categories = localData('Categories') || [];
-  const [featuredImage, setFeaturedImage] = useState(localData('postFeaturedImage') || "");
+  const categories = localData('categories') || [];
   const [categoriesValue, setCategories] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [mediaModalVisible, setMediaModalVisible] = useState(false);
+  const [featuredImage, setFeaturedImage] = useState(localData('postFeaturedImage') || "");
 
   const resetFields = () => {
-    setTitle("");
-    setContent("");
-    setCategories([]);
-    setFeaturedImage("");
-    setCategories([]);
-    setError("");
-    setSuccess("");
+    console.log("resetting fields");
+    localStorage.removeItem("postTitle");
+    localStorage.removeItem("postContent");
+    localStorage.removeItem("categories");
+    localStorage.removeItem("postFeaturedImage");
+    setMedia({ ...media, selected: "" });
   };
 
   useEffect(() => {
@@ -46,12 +46,12 @@ export default function CreatePostPage() {
 
   // publish post
   const publishPost = async () => {
-    console.table({ title, content, categories, isPublished: true });
-    axios.post('/posts/create-post', { title, content, categories: categories, isPublished: true })
+    console.table({ title, content, categories, featuredImage, isPublished: true });
+    axios.post('/posts/create-post', { title, content, categories: categories, isPublished: true, featuredImage: featuredImage._id || "" })
       .then(res => {
         console.log(res.data);
         setSuccess(res.data.message);
-        // resetFields();
+        resetFields();
         router.push("/admin/posts");
       })
       .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
@@ -73,7 +73,7 @@ export default function CreatePostPage() {
       </Head>
       {/* End of Head */}
       <AdminLayout>
-        <MediaModal visible={mediaModalVisible} onClick={() => setMediaModalVisible(false)} />
+        <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-3/5">
             {error && (
@@ -99,7 +99,7 @@ export default function CreatePostPage() {
                 }}
                 name="postTitle"
                 id="postTitle"
-                className="block w-full text-lg border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                className="block w-full text-lg border-gray-300 rounded-md shadow-sm dark:bg-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Create a post title" required
               />
               {/* post title end */}
@@ -110,7 +110,8 @@ export default function CreatePostPage() {
                 setContent(value());
                 localStorage.setItem("postContent", JSON.stringify(value()));
               }}
-              uploadImage={(file) => uploadImage(file)}
+              uploadImage={(file) => uploadImage(file).then(res => res.url)}
+              dark={localData('theme') == "dark" ? true : false}
             />
           </div>
           <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
@@ -119,9 +120,18 @@ export default function CreatePostPage() {
               <MultiSelect label="Categories" values={categoriesValue} />
             </div>
             {/* categories multiselect end */}
+            {/* image upload preview */}
+            {
+              (media?.selected || featuredImage) && (
+                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-sm">
+                  <Image className="w-full" src={media.selected || featuredImage.url} layout="responsive" width={720} height={400} />
+                </div>
+              )
+            }
+            {/* image upload preview ends */}
             {/* upload featured image */}
             <div className="mb-4">
-              <Button className="w-full" onClick={() => setMediaModalVisible(true)} icon={<ArrowUpTrayIcon />} text="Add Featured Image" />
+              <Button className="w-full my-2" onClick={() => setMedia({ ...media, showMediaModal: true })} icon={<ArrowUpTrayIcon />} text="Add Featured Image" />
             </div>
             {/* upload featured image end */}
             {/* publish button */}
