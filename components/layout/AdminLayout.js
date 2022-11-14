@@ -22,7 +22,6 @@ import { ToggleButton } from "../Buttons";
 import Search from '../forms/Search';
 import { useRouter } from 'next/router';
 import Avatar from "../Avatar";
-import PostDataProvider from '../../context/Post';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
