@@ -1,13 +1,15 @@
 import { Popover } from '@headlessui/react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Logo from '../Logo';
 import { ToggleButton } from '../Buttons';
 import classNames from "../../utils/classNames";
+import Search from '../forms/Search';
 
 const user = {
-
+  name: "Manish",
+  email: "hello@gmail.com",
+  imageUrl: "https://images.unsplash.com/photo-1615109398623-88346a601842?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
 };
 
 const navigation = [
@@ -18,8 +20,7 @@ const navigation = [
 ];
 const userNavigation = [
   { name: 'Your Profile', href: '/#' },
-  { name: 'Settings', href: '/#' },
-  { name: 'Sign out', href: '/#' },
+  { name: 'Log out', href: '/logout' },
 ];
 
 export default function MainNav() {
@@ -48,23 +49,7 @@ export default function MainNav() {
                 </div>
                 <div className="flex-1 min-w-0 lg:px-0 xl:col-span-6">
                   <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                    <div className="w-full">
-                      <label htmlFor="search" className="sr-only">
-                        Search
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
-                        </div>
-                        <input
-                          id="search"
-                          name="search"
-                          className="block w-full py-2 pl-10 pr-3 text-sm placeholder-gray-500 bg-white border border-gray-300 rounded-md dark:border-gray-600 dark:placeholder-gray-400 dark:bg-gray-600 focus:outline-none focus:text-gray-900 dark:focus:text-white focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                          placeholder="Search"
-                          type="search"
-                        />
-                      </div>
-                    </div>
+                    <Search />
                   </div>
                 </div>
                 <div className="flex items-center md:right-0 md:inset-y-0 lg:hidden">
