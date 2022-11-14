@@ -22,3 +22,9 @@
 __next > div {
   @apply h-full;
 }
+
+/* Some template for learnr */
+
+.admin-topic-heading {
+  @apply text-xl font-semibold;
+}
