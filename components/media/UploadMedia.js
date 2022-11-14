@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { uploadImage } from "../../functions/upload";
 import { MediaContext } from "../../context/Media";
-import Image from "next/image";
 
 export default function Media() {
   // context
