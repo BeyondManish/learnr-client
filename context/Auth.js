@@ -1,19 +1,11 @@
 import axios from "axios";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
+import localData from "../utils/localData";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [auth, setAuth] = useState({
-    user: null,
-    token: ""
-  });
-
-  useEffect(() => {
-    if (localStorage.getItem('auth')) {
-      setAuth(JSON.parse(localStorage.getItem('auth')));
-    }
-  }, []);
+  const [auth, setAuth] = useState(localData('auth') || { user: null, token: "" });
 
   // configure axios defaults
   if (process.server) {
