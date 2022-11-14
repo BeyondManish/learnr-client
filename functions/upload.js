@@ -25,9 +25,9 @@ export const uploadImage = async (file) => {
       image: image,
       type: file.type
     };
-    const res = await axios.post("/upload-image", imageFile);
-    const imageURL = res.data.url;
-    return imageURL;
+    const res = await axios.post("/files/upload-image", imageFile);
+    const media = res.data.media;
+    return media;
   } catch (err) {
     console.log(err);
   }
