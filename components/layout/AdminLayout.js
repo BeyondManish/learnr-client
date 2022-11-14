@@ -12,37 +12,42 @@ import {
   TagIcon,
   PhotoIcon,
   ChatBubbleBottomCenterTextIcon,
-  ClipboardDocumentListIcon
+  ClipboardDocumentListIcon,
+  UsersIcon
 } from '@heroicons/react/24/outline';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Logo from '../Logo';
 import { AuthContext } from '../../context/Auth';
 import classNames from "../../utils/classNames";
 import { ToggleButton } from "../Buttons";
+import Search from '../forms/Search';
+import { useRouter } from 'next/router';
+import Avatar from "../Avatar";
+import PostDataProvider from '../../context/Post';
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon, current: true },
-  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, current: false, children: [{ name: "Create", icon: PencilSquareIcon, href: "/admin/posts/create", current: false }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/admin/posts", current: false }] },
-  { name: 'Categories', href: '/admin/categories', icon: TagIcon, current: false },
-  { name: 'Media', href: '/admin/media', icon: PhotoIcon, current: false },
-  { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon, current: false },
-  { name: 'Reports', href: '/admin/reports', icon: ChartBarIcon, current: false },
+  { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
+  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, children: [{ name: "Create Post", icon: PencilSquareIcon, href: "/admin/posts/create" }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/admin/posts" }] },
+  { name: 'Categories', href: '/admin/categories', icon: TagIcon },
+  { name: 'Media', href: '/admin/media', icon: PhotoIcon },
+  { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon },
+  { name: 'Reports', href: '/admin/reports', icon: ChartBarIcon },
+  { name: 'Users', href: '/admin/users', icon: UsersIcon }
 ];
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
   { name: 'Logout', href: '/logout' },
 ];
 
 export default function AdminLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
+  const [current, setCurrent] = useState('Dashboard');
+  const router = useRouter();
 
   return (
     <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="fixed inset-0 z-20 flex md:hidden" onClose={setSidebarOpen}>
+          <Dialog as="div" className="fixed inset-0 z-20 flex md:hidden dark:bg-gray-900" onClose={setSidebarOpen}>
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -63,7 +68,7 @@ export default function AdminLayout({ children }) {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <div className="relative flex flex-col flex-1 w-full max-w-xs pt-5 pb-4 bg-white">
+              <div className="relative flex flex-col flex-1 w-full max-w-xs pt-5 pb-4 dark:bg-gray-900">
                 <Transition.Child
                   as={Fragment}
                   enter="ease-in-out duration-300"
@@ -96,7 +101,7 @@ export default function AdminLayout({ children }) {
                         href={item.href}
                         className={
                           classNames(
-                            item.current
+                            item.href === router.asPath
                               ? 'bg-gray-100 text-gray-900'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
                             'group flex items-center px-2 py-2 text-base font-medium rounded-md'
@@ -104,7 +109,8 @@ export default function AdminLayout({ children }) {
                       >
                         <item.icon
                           className={classNames(
-                            item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                            item.href === router.asPath
+                              ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                             'mr-4 flex-shrink-0 h-6 w-6'
                           )}
                           aria-hidden="true"
@@ -124,8 +130,8 @@ export default function AdminLayout({ children }) {
 
         {/* Static sidebar for desktop */}
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-          {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r border-gray-200">
+          {/* Sidebar component */}
+          <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r border-gray-200 dark:border-gray-900 dark:bg-gray-900">
             <div className="flex items-center flex-shrink-0 px-4">
               {/* logo */}
               <Logo />
@@ -141,14 +147,15 @@ export default function AdminLayout({ children }) {
                             <a
                               href={item.href}
                               className={classNames(
-                                item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50',
+                                item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 dark:text-gray-100 dark:hover:text-gray-900 hover:bg-gray-50',
                                 'group flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md'
                               )}
                             >
                               <div className='flex items-center justify-center'>
                                 <item.icon
                                   className={classNames(
-                                    item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                    item.href === router.asPath
+                                      ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                                     'mr-3 flex-shrink-0 h-6 w-6'
                                   )}
                                   aria-hidden="true"
@@ -167,13 +174,15 @@ export default function AdminLayout({ children }) {
                                 key={item.name}
                                 href={item.href}
                                 className={classNames(
-                                  item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                                  'group flex items-center pl-6 pr-2 py-2 text-sm font-medium rounded-md'
+                                  item.href === router.asPath
+                                    ? 'bg-gray-100 text-gray-900' : 'text-gray-600 dark:text-gray-100 dark:hover:text-gray-900 hover:bg-gray-50 hover:text-gray-900',
+                                  'group mt-1 flex items-center pl-6 pr-2 py-2 text-sm font-medium rounded-md'
                                 )}
                               >
                                 <item.icon
                                   className={classNames(
-                                    item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                    item.href === router.asPath
+                                      ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                                     'mr-3 flex-shrink-0 h-6 w-6'
                                   )}
                                   aria-hidden="true"
@@ -190,13 +199,15 @@ export default function AdminLayout({ children }) {
                       key={item.name}
                       href={item.href}
                       className={classNames(
-                        item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                        item.href === router.asPath
+                          ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-100 dark:hover:text-gray-900',
                         'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                       )}
                     >
                       <item.icon
                         className={classNames(
-                          item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                          item.href === router.asPath
+                            ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
                           'mr-3 flex-shrink-0 h-6 w-6'
                         )}
                         aria-hidden="true"
@@ -211,85 +222,77 @@ export default function AdminLayout({ children }) {
         {/* Sidebar ends */}
         <div className="flex flex-col flex-1 md:pl-64">
           {/* Admin nav */}
-          <div className="sticky top-0 z-20 flex flex-shrink-0 h-16 bg-white shadow">
+          <div className="sticky top-0 z-20 flex flex-shrink-0 h-16 bg-white shadow dark:bg-gray-900 dark:text-gray-100">
             <button
               type="button"
-              className="px-4 text-gray-500 border-r border-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className="px-4 text-gray-500 border-r border-gray-200 dark:border-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="w-6 h-6" aria-hidden="true" />
             </button>
+            {/* Search desktop */}
             <div className="flex justify-between flex-1 px-4">
-              <div className="flex flex-1">
-                <form className="flex w-full md:ml-0" action="#" method="GET">
-                  <label htmlFor="search-field" className="sr-only">
-                    Search
-                  </label>
-                  <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                    <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
-                      <MagnifyingGlassIcon className="w-5 h-5" aria-hidden="true" />
-                    </div>
-                    <input
-                      id="search-field"
-                      className="block w-full h-full py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 border-transparent focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm"
-                      placeholder="Search"
-                      type="search"
-                      name="search"
-                    />
-                  </div>
-                </form>
+              <div className='flex items-center justify-center w-full'>
+                <div className="flex items-center justify-center flex-1 max-w-xl">
+                  <Search />
+                </div>
               </div>
-              <div className="flex items-center ml-4 md:ml-6">
-                <button
-                  type="button"
-                  className="p-1 text-gray-400 bg-white rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="w-6 h-6" aria-hidden="true" />
-                </button>
-
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative mx-3">
-                  <div>
-                    <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
+              {/* notif, avatar and toggle button */}
+              <div className='flex items-center'>
+                {/* notification and avatar, show only on login */}
+                <div className="flex items-center ml-4 md:ml-6">
+                  <button
+                    type="button"
+                    className="p-1 text-gray-400 rounded-full dark:hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                active ? 'bg-gray-100' : '',
-                                'block px-4 py-2 text-sm text-gray-700'
-                              )}
-                            >
-                              {item.name}
-                            </a>
-                          )}
-                        </Menu.Item>
-                      ))}
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+                    <span className="sr-only">View notifications</span>
+                    <BellIcon className="w-6 h-6" aria-hidden="true" />
+                  </button>
+
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="relative mx-3">
+                    <div>
+                      <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <span className="sr-only">Open user menu</span>
+                        <Avatar />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        {userNavigation.map((item) => (
+                          <Menu.Item key={item.name}>
+                            {({ active }) => (
+                              <a
+                                href={item.href}
+                                className={classNames(
+                                  active ? 'bg-gray-100' : '',
+                                  'block px-4 py-2 text-sm text-gray-700'
+                                )}
+                              >
+                                {item.name}
+                              </a>
+                            )}
+                          </Menu.Item>
+                        ))}
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
+                </div>
+                {/* notification and avatar ends */}
+                {/* theme toggle button */}
+                <ToggleButton />
+                {/* end theme toggle */}
               </div>
+              {/* end notif, avatar and toggle button */}
             </div>
           </div>
           {/* Admin nav ends */}
