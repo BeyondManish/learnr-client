@@ -1,22 +1,18 @@
 import Head from "next/head";
 import AdminLayout from "../../../components/layout/AdminLayout";
-import axios from 'axios';
-import { useState, useEffect } from "react";
-import { Button } from "../../../components/Buttons";
-import { useRouter } from 'next/router';
+import { useEffect, useContext } from "react";
+import { PostContext } from "../../../context/Post";
+import PostTable from "../../../components/table/PostTable";
+import { loadPosts } from "../../../functions/load";
 
 export default function PostPage() {
 
-  const router = useRouter();
-  const [posts, setPosts] = useState([]);
-
+  const [postData, setPostData] = useContext(PostContext);
   useEffect(() => {
-    axios.get('/posts')
-      .then(res => {
-        console.log(res.data.data.posts);
-        setPosts(res.data.data.posts);
-      })
-      .catch(err => console.log(err));
+    loadPosts().then(({ data }) => {
+      setPostData(prev => ({ ...prev, posts: data.posts }));
+      console.log(postData);
+    });
   }, []);
 
   return (
@@ -27,20 +23,7 @@ export default function PostPage() {
         </title>
       </Head>
       <AdminLayout>
-        {posts.length > 0 ?
-          posts.map(post => (
-            <div key={post._id}>
-              <h1>{post.title}</h1>
-              <p>{post.author.firstname}</p>
-              <p>{post.content}</p>
-              <br />
-            </div>
-          )) :
-          (<div>
-            <h1 className="mb-4 text-lg font-medium">No posts yet</h1>
-            <Button text="Create post" onClick={() => router.push("/admin/posts/create")} />
-          </div>
-          )}
+        <PostTable headings={["title", "author", "categories", "date", "action"]} data={postData.posts} />
       </AdminLayout>
     </>
   );
