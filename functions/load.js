@@ -10,12 +10,13 @@ export const loadPosts = async () => {
   return response.data;
 };
 
-export const loadPost = async (author, slug) => {
-  const response = await axios.get(`/${author}/${slug}`);
+export const loadPost = async (slug) => {
+  const response = await axios.get(`/post/${slug}`);
   return response.data;
 };
 
 export const loadAllMedias = async () => {
   const response = await axios.get('/files');
+  console.log(response);
   return response.data;
 };
