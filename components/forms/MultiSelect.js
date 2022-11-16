@@ -5,8 +5,8 @@ import { BadgeWithCrossButton } from '../Badges';
 import classNames from "../../utils/classNames";
 import localData from '../../utils/localData';
 
-export default function MultiSelect({ label, values }) {
-  const [selectedValues, setSelectedValues] = useState(localData(label.toLowerCase()) || []);
+export default function MultiSelect({ label, values, selected }) {
+  const [selectedValues, setSelectedValues] = useState(selected || []);
   const [query, setQuery] = useState("");
 
   const filteredValue =
@@ -28,6 +28,7 @@ export default function MultiSelect({ label, values }) {
 
   useEffect(() => {
     localStorage.setItem(`${label.toLowerCase()}`, JSON.stringify(selectedValues));
+    console.log(selectedValues);
   }, [selectedValues]);
 
   return (
