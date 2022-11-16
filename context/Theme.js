@@ -7,27 +7,26 @@ export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(localData("theme") || "light");
   // update theme based on localStorage
   useEffect(() => {
-    setTheme(theme === "dark" ? "light" : "dark");
-    console.log(theme);
     const html = document.documentElement;
     if (theme == "dark") {
       html.classList.add("dark");
     } else {
       html.classList.remove("dark");
     }
-  }, []);
+    localStorage.setItem("theme", JSON.stringify(theme));
+  }, [theme]);
 
 
 
   const toggleTheme = () => {
     const html = document.documentElement;
+    setTheme(theme == "dark" ? "light" : "dark");
+    console.log(theme);
     if (theme == "dark") {
       html.classList.add("dark");
     } else {
       html.classList.remove("dark");
     }
-    setTheme(theme == "dark" ? "light" : "dark");
-    localStorage.setItem("theme", JSON.stringify(theme));
   };
 
   return (<ThemeContext.Provider value={[theme, toggleTheme]}>
