@@ -144,7 +144,7 @@ export default function CreatePostPage() {
             </div>
             {/* upload featured image end */}
             {/* publish button */}
-            <div className="flex ">
+            <div className="flex mt-2">
               <Button text="Publish" onClick={publishPost} />
               <Link href=''>
                 <a
