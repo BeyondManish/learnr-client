@@ -30,7 +30,7 @@ export default function CreatePostPage() {
   const [selectedCategories, setSelectedCategories] = useState(localData("categories") || []);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const featuredImage = localData('postFeaturedImage') || "";
+  const [featuredImage, setFeaturedImage] = useState(localData("featuredImage") || "");
 
   const resetFields = () => {
     console.log("resetting fields");
@@ -46,6 +46,12 @@ export default function CreatePostPage() {
       setCategoriesValue(res.data.categories);
     });
   }, []);
+
+  useEffect(() => {
+    if (media.selected) {
+      localStorage.setItem("postFeaturedImage", JSON.stringify(media.selected));
+    }
+  }, [media.selected]);
 
   // publish post
   const publishPost = async () => {
@@ -132,8 +138,8 @@ export default function CreatePostPage() {
             {/* image upload preview */}
             {
               (media?.selected || featuredImage) && (
-                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-md ">
-                  <Image className="w-full" src={media.selected || featuredImage.url} layout="responsive" width={720} height={400} />
+                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-md max-h-64 ">
+                  <Image className="object-cover w-full" src={media.selected.url || featuredImage.url} layout="responsive" width={720} height={400} />
                 </div>
               )
             }
