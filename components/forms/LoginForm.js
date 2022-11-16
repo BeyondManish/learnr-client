@@ -4,9 +4,10 @@ import { useState, useContext } from "react";
 import { ErrorBanner, SuccessBanner } from "../Banner";
 import { useRouter } from "next/router";
 import SocialLogin from "../social media/SocialLogin";
+import { AuthContext } from "../../context/Auth";
 
 export default function Loginform() {
-
+  const [auth, setAuth] = useContext(AuthContext);
   const router = useRouter();
 
   const [state, setState] = useState({
@@ -37,7 +38,7 @@ export default function Loginform() {
         res.data.data.user.role === "admin" ? router.push("/admin/dashboard") : router.push("/");
       })
       .catch(err => {
-        setState({ ...state, error: err.response.data.message || err.response.data.errors[0], buttonText: "Login" });
+        setState({ ...state, error: err.response?.data.message || err.response?.data.errors[0] || "Something went wrong.", buttonText: "Login" });
       });
   };
 
