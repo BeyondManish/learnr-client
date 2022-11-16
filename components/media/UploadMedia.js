@@ -19,7 +19,6 @@ export default function Media() {
               selected: res,
               showMediaModal: false,
             });
-            localStorage.setItem("postFeaturedImage", JSON.stringify(res));
             setLoading(!loading);
           });
         }}
