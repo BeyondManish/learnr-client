@@ -6,7 +6,6 @@ export default function Media() {
   // context
   const [media, setMedia] = useContext(MediaContext);
   const [loading, setLoading] = useState(false);
-
   return (
     <div className="flex items-center justify-center w-full">
       <input
@@ -16,8 +15,8 @@ export default function Media() {
           uploadImage(e.target.files[0]).then((res) => {
             console.log(res);
             setMedia({
-              images: [res.url],
-              selected: res.url,
+              images: [res],
+              selected: res,
               showMediaModal: false,
             });
             localStorage.setItem("postFeaturedImage", JSON.stringify(res));
