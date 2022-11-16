@@ -12,7 +12,6 @@ export default function Home() {
 
   useEffect(() => {
     loadPosts().then(({ data }) => {
-      console.log(data);
       setPostData(prev => ({ ...prev, posts: data.posts }));
     });
     loadCategories().then(({ data }) => setPostData(prev => ({ ...prev, categories: data.categories })));
