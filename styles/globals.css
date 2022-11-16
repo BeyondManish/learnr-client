@@ -8,7 +8,7 @@
 
 /* for the rich markdown editor */
 .ProseMirror {
-  @apply min-h-[500px] px-7 py-4;
+  @apply h-full px-8 py-4 bg-white dark:bg-gray-900;
 }
 
 .ProseMirror-widget {
@@ -16,7 +16,11 @@
 }
 
 .sc-bcXHqe {
-  @apply overflow-hidden border border-gray-300 rounded-md shadow-sm;
+  @apply h-full overflow-hidden rounded-md;
+}
+
+.sc-dIfARi {
+  @apply w-full h-full;
 }
 
 __next > div {
