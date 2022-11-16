@@ -1,6 +1,7 @@
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { useContext, useEffect } from 'react';
 import { ThemeContext } from "../context/Theme";
+import classNames from '../utils/classNames';
 
 export function Button({ className, icon, text, onClick, type }) {
   return (<button
@@ -8,11 +9,11 @@ export function Button({ className, icon, text, onClick, type }) {
     type={type || "button"}
     className={`inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ` + className}
   > {
-      icon ? <span className="w-[18px] h-[18px] mr-3">
+      icon ? <span className={classNames(text ? "mr-3" : "", `w-[18px] h-[18px]`)}>
         {icon}
       </span> : null
     }
-    {text}
+    {text ? text : null}
   </button>);
 }
 
