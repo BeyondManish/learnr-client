@@ -15,19 +15,22 @@ import MediaModal from "../../../components/media/MediaModal";
 import { useRouter } from "next/router";
 import Head from 'next/head';
 import { MediaContext } from "../../../context/Media";
+import { ThemeContext } from '../../../context/Theme';
+
 
 export default function CreatePostPage() {
+  const [theme, setTheme] = useContext(ThemeContext);
   const [media, setMedia] = useContext(MediaContext);
-
+  console.log(theme);
   const router = useRouter();
 
   const [title, setTitle] = useState(localData('postTitle') || "");
   const [content, setContent] = useState(localData('postContent') || "");
-  const categories = localData('categories') || [];
-  const [categoriesValue, setCategories] = useState([]);
+  const [categoriesValue, setCategoriesValue] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(localData("categories") || []);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [featuredImage, setFeaturedImage] = useState(localData('postFeaturedImage') || "");
+  const featuredImage = localData('postFeaturedImage') || "";
 
   const resetFields = () => {
     console.log("resetting fields");
@@ -40,13 +43,15 @@ export default function CreatePostPage() {
 
   useEffect(() => {
     loadCategories().then((res) => {
-      setCategories(res.data.categories);
+      setCategoriesValue(res.data.categories);
     });
   }, []);
 
   // publish post
   const publishPost = async () => {
-    console.table({ title, content, categories, featuredImage, isPublished: true });
+    const categories = localData('categories') || [];
+    featuredImage = localData('postFeaturedImage') || "";
+    console.table({ title, content, categories, featuredImage: featuredImage._id, isPublished: true });
     axios.post('/posts/create-post', { title, content, categories: categories, isPublished: true, featuredImage: featuredImage._id || "" })
       .then(res => {
         console.log(res.data);
@@ -59,7 +64,7 @@ export default function CreatePostPage() {
 
   // save post as draft
   const savePost = async () => {
-    console.table({ title, content, categories, featuredImage: featuredImage ? featuredImage : "", isPublished: false });
+    console.table({ title, content, categories, featuredImage: featuredImage ? featuredImage._id : "", isPublished: false });
     // await axios.post('/posts/create-post', { title, content, categories: categories, featuredImage: featuredImageURL ? featuredImage : "", isPublished: false });
   };
 
@@ -75,7 +80,7 @@ export default function CreatePostPage() {
       <AdminLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
-          <div className="w-full lg:w-3/5">
+          <div className="w-full lg:w-2/3">
             {error && (
               <ErrorBanner message={error} />
             )}
@@ -104,26 +109,30 @@ export default function CreatePostPage() {
               />
               {/* post title end */}
             </div>
-            <Editor placeholder="Write something..."
-              defaultValue={content}
-              onChange={(value) => {
-                setContent(value());
-                localStorage.setItem("postContent", JSON.stringify(value()));
-              }}
-              uploadImage={(file) => uploadImage(file).then(res => res.url)}
-              dark={localData('theme') == "dark" ? true : false}
-            />
+            <div className='min-h-[500px]'>
+
+              <Editor placeholder="Write something..."
+                className='bg-gray-100 dark:bg-gray-900'
+                defaultValue={content}
+                onChange={(value) => {
+                  setContent(value());
+                  localStorage.setItem("postContent", JSON.stringify(value()));
+                }}
+                uploadImage={(file) => uploadImage(file).then(res => res.url)}
+                dark={theme == "dark" ? true : false}
+              />
+            </div>
           </div>
-          <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
+          <div className="w-full mt-5 lg:ml-8 lg:w-1/3">
             {/* categories multiselect */}
             <div className="mb-4">
-              <MultiSelect label="Categories" values={categoriesValue} />
+              <MultiSelect label="Categories" values={categoriesValue} selected={selectedCategories} />
             </div>
             {/* categories multiselect end */}
             {/* image upload preview */}
             {
               (media?.selected || featuredImage) && (
-                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-sm">
+                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-md ">
                   <Image className="w-full" src={media.selected || featuredImage.url} layout="responsive" width={720} height={400} />
                 </div>
               )
