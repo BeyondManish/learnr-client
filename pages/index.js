@@ -36,7 +36,7 @@ export default function Home() {
           </div>
           <aside className='hidden md:block'>
             <div className='ml-6'>
-              {postData.categories ?
+              {postData.categories.length > 0 ?
                 (<>
                   <h2 className='text-2xl font-semibold'>Categories</h2>
                   <ul className='flex flex-wrap max-w-xs mt-2'>
