@@ -15,9 +15,9 @@ export default function Home() {
       setPostData(prev => ({ ...prev, posts: data.posts }));
     });
     loadCategories().then(({ data }) => setPostData(prev => ({ ...prev, categories: data.categories })));
-
   }, []);
 
+  console.log(postData);
   return (
     <div>
       <Head>
