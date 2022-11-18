@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { AuthContext } from "../../context/Auth";
 import SocialLogin from "../social media/SocialLogin";
 
-export default function Loginform() {
+export default function RegisterForm() {
 
   const router = useRouter();
   const [auth, setAuth] = useContext(AuthContext);
@@ -36,7 +36,6 @@ export default function Loginform() {
     e.preventDefault();
     axios.post(`/auth/signup`, { firstname, lastname, username, email, password })
       .then(response => {
-        console.log(response.data);
         setAuth({ token: response.data.token, user: response.data.data.user });
         setState({ ...state, success: response.data.message, error: "", buttonText: "Register" });
         localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
