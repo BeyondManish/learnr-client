@@ -43,7 +43,7 @@ export default function Home() {
                       <h2 className='text-2xl font-semibold'>Categories</h2>
                       <ul className='flex flex-wrap max-w-xs mt-2'>
                         {postData.categories.map((category) => (
-                          <Link key={category.slug} href={`/categories/${category.slug}`}>
+                          <Link key={category.slug} href={`/category/${category.slug}`}>
                             <a>
                               <li className='flex items-center justify-between px-4 py-2 my-2 mr-3 text-sm font-medium text-gray-700 bg-white rounded-md dark:bg-gray-900 dark:text-gray-100'>
                                 <span>{category.name}</span>
