@@ -3,7 +3,7 @@ import MainLayout from '../../components/layout/MainLayout';
 import Card from '../../components/posts/Card';
 import { loadCategoryPost } from '../../functions/load';
 
-export default function Home({ posts }) {
+export default function CategoryPostPage({ posts, category }) {
   return (
     <div>
       <Head>
@@ -16,6 +16,8 @@ export default function Home({ posts }) {
           posts?.length > 0 ? (
             <div className='flex justify-center w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
               <div className='w-full md:w-3/5 lg:w-2/5'>
+                <h2 className='my-2 text-2xl font-semibold'>Post for {category.name}</h2>
+
                 {
                   posts.map((post) => (
                     <Card key={post.slug} post={post} />
@@ -36,7 +38,8 @@ export const getServerSideProps = async ({ params }) => {
   console.log(data);
   return {
     props: {
-      posts: data.posts
+      posts: data.posts,
+      category: data.category
     }
   };
 };
