@@ -32,10 +32,10 @@ export default function Content({ post }) {
           {post.title}
         </h1>
         <div className="my-3">
-          {post.categories.map(item => (<Link key={item.slug} href={`/categories/${item.slug}`}><a><span className="mr-1.5"><Badge title={item.name} /></span></a></Link>))}
+          {post.categories.map(item => (<Link key={item.slug} href={`/category/${item.slug}`}><a><span className="mr-1.5"><Badge title={item.name} /></span></a></Link>))}
         </div>
       </div>
-      <Editor dark={theme === "dark" ? true : false} defaultValue={post.content} readOnly={true} />
+      <Editor dark={theme === "dark" ? true : false} defaultValue={post.content} readOnly={true} readOnlyWriteCheckboxes={true} />
 
     </div>
   );
