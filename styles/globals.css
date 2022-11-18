@@ -32,3 +32,13 @@ __next > div {
 .admin-topic-heading {
   @apply text-xl font-semibold;
 }
+
+/* for text editor */
+
+.checkbox_item {
+  @apply !flex !items-center;
+}
+
+ul.checkbox_list li input {
+  @apply !mr-2 !my-0 !p-1.5;
+}
