@@ -1,3 +1,5 @@
+import classNames from '../utils/classNames';
+
 export function BadgeWithCrossButton({ name, onClick }) {
   return (
     <span className="inline-flex rounded-full items-center py-0.5 pl-2.5 pr-1 text-sm font-medium bg-indigo-100 text-indigo-700 mr-1">
@@ -16,9 +18,9 @@ export function BadgeWithCrossButton({ name, onClick }) {
   );
 }
 
-export function Badge({ title }) {
+export function Badge({ title, className }) {
   return (
-    <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-200 text-gray-800">
+    <span className={classNames(className, "inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-200 text-gray-800")}>
       {title}
     </span>
   );
