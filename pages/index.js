@@ -9,10 +9,12 @@ import Link from 'next/link';
 export default function Home() {
 
   const [postData, setPostData] = useContext(PostContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadPosts().then(({ data }) => {
       setPostData(prev => ({ ...prev, posts: data.posts }));
+      setLoading(false);
     });
     loadCategories().then(({ data }) => setPostData(prev => ({ ...prev, categories: data.categories })));
   }, []);
@@ -26,7 +28,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainLayout>
-        {
+        {loading ? ("") : (
           postData.posts.length > 0 && postData.categories.length > 0 ? (
             <div className='flex justify-center w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
               <div className='w-full md:w-3/5 lg:w-2/5'>
@@ -60,7 +62,8 @@ export default function Home() {
               </aside>
             </div>
           ) :
-            (<div>There is nothing here...</div>)
+            (<div className='w-full text-gray-900 bg-white rounded-md md:w-3/5 lg:w-2/5 lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>There is nothing here...</p></div>)
+        )
         }
       </MainLayout >
     </div >

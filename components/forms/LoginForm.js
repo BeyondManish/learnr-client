@@ -32,10 +32,12 @@ export default function Loginform() {
     e.preventDefault();
     axios.post(`/auth/login`, { email, password })
       .then((res) => {
-        setAuth({ token: res.data.token, user: res.data.data.user });
-        localStorage.setItem("auth", JSON.stringify({ token: res.data.token, user: res.data.data.user }));
+        const token = res.data.token;
+        const user = res.data.data.user;
+        setAuth({ token: token, user: user });
+        localStorage.setItem("auth", JSON.stringify({ token: token, user: user }));
         setState({ ...state, success: res.data.message, error: "", buttonText: "Login" });
-        res.data.data.user.role === "admin" ? router.push("/admin/dashboard") : router.push("/");
+        router.push(`/${user.role}/dashboard`);
       })
       .catch(err => {
         setState({ ...state, error: err.response?.data.message || err.response?.data.errors[0] || "Something went wrong.", buttonText: "Login" });

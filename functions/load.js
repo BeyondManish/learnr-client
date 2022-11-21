@@ -23,6 +23,31 @@ export const loadPost = async (slug) => {
 
 export const loadAllMedias = async () => {
   const response = await axios.get('/files');
-  console.log(response);
+  return response.data;
+};
+
+export const loadCurrentUser = async () => {
+  const response = await axios.get('/auth/current-user');
+  return response.data;
+};
+
+// load user post
+export const loadUserPost = async (username) => {
+  const response = await axios.get(`/${username}/posts`);
+  return response.data;
+};
+
+export const loadUserMedia = async (username) => {
+  const response = await axios.get(`/${username}/files`);
+  return response.data;
+};
+
+export const loadUserCategory = async (username) => {
+  const response = await axios.get(`/${username}/categories`);
+  return response.data;
+};
+
+export const loadUser = async (username) => {
+  const response = await axios.get(`/user/${username}`);
   return response.data;
 };

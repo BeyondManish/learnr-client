@@ -27,10 +27,17 @@ export default function BlogPost({ post }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const { data } = await axios.get(`/post/${params.slug}`);
+  const post = await axios.get(`/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => null);
+
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
-      post: data.data.post,
+      post,
     }
   };
 }

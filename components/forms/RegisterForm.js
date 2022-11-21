@@ -35,15 +35,17 @@ export default function RegisterForm() {
   const submitForm = (e) => {
     e.preventDefault();
     axios.post(`/auth/signup`, { firstname, lastname, username, email, password })
-      .then(response => {
-        setAuth({ token: response.data.token, user: response.data.data.user });
-        setState({ ...state, success: response.data.message, error: "", buttonText: "Register" });
-        localStorage.setItem("auth", JSON.stringify({ token: response.data.token, user: response.data.data.user }));
-        // redirect to admin dashboard
-        router.push("/admin/dashboard");
+      .then(res => {
+        console.log(res.data);
+        const token = res.data.token;
+        const user = res.data.data.user;
+        setAuth({ token: token, user: user });
+        setState({ ...state, success: res.data.message, error: "", buttonText: "Register" });
+        localStorage.setItem("auth", JSON.stringify({ token: token, user: user }));
+        if (user.role === "admin" || user.role === "author") router.push(`/${user.role}/dashboard`);
+        else router.push(`/`);
       })
       .catch(err => {
-        console.log(err.response.data);
         setState({ ...state, error: err.response.data.message || err.response.data.errors[0] || "", success: "", buttonText: "Register" });
       });
   };

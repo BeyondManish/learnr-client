@@ -62,7 +62,7 @@ export default function PostPage() {
                       <td className="px-4 py-4">{post.title}</td>
                     </a>
                     <td>{post.author.firstname + " " + post.author.lastname}</td>
-                    <td>{post.categories.map((category) => (<Badge key={category.slug} title={category.name} />))}</td>
+                    <td>{post.categories.map((category) => (<Badge className="mr-1" key={category.slug} title={category.name} />))}</td>
                     <td>{post.createdAt}</td>
                     <td className="flex items-center px-4 py-4">
                       <div>

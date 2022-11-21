@@ -27,7 +27,7 @@ export default function CategoriesAdminPage() {
     loadCategories().then((res) => {
       setPostData((prev) => ({ ...prev, categories: res.data.categories }));
     });
-  }, []);
+  }, [postData.categories]);
 
   const submitFrom = (e) => {
     e.preventDefault();
