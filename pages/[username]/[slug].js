@@ -7,6 +7,7 @@ import axios from "axios";
 import Head from 'next/head';
 import Link from 'next/link';
 import { loadComments } from '../../functions/load';
+import dayjs from 'dayjs';
 
 export default function BlogPost({ post }) {
   const [auth, setAuth] = useContext(AuthContext);
@@ -19,15 +20,15 @@ export default function BlogPost({ post }) {
   // for comment section
   useEffect(async () => {
     await loadComments(post._id).then(({ data }) => {
-      console.log(data);
-      setComments((comments) => [...comments, data.comments]);
+      setComments(data.comments);
     }).catch(err => console.log(err));
   }, []);
 
 
   const submitComment = async (comment, postId) => {
     await axios.post("/comment/create", { comment, postId }).then(({ data }) => {
-      setComments((comments) => [...comments, data.comments]);
+      console.log(data);
+      comments.push(data.comment);
       setSuccess("Comment posted successfully");
       setError("");
     }).catch((err) => {
@@ -35,6 +36,7 @@ export default function BlogPost({ post }) {
       setSuccess("");
     });
   };
+  console.log(comments);
 
   return (
     <MainLayout>
@@ -50,6 +52,26 @@ export default function BlogPost({ post }) {
         <h2 className="my-4 text-xl font-medium">Comments</h2>
         <div className="px-8 py-4 mb-4 bg-white border-gray-300 rounded-md dark:bg-gray-900 dark:border-gray-700">
           <h2 className="my-4 text-xl font-medium">Leave a comment</h2>
+          {(comments.length > 0) && comments.map((comment) => (
+            <div key={comment._id} className="flex flex-col mb-4">
+              <div className="flex items-center mb-2">
+                <img src={comment.author.photo} alt="profile picture" className="w-10 h-10 mr-4 rounded-full" />
+                <div className="flex flex-col">
+                  <div>
+                    <Link href={`/${comment.author.username}`}>
+                      <a className="text-xs font-medium text-gray-900 dark:text-gray-100">{comment.author.firstname}</a>
+                    </Link>
+                    <span className="ml-0.5 text-xs text-gray-500 dark:text-gray-400">@{comment.author.username} • {dayjs(comment.createdAt).format("D MMM, YYYY")}</span>
+                    <div>
+                      <span className="text-sm dark:text-gray-400">{comment.comment}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+          }
+
           {
             auth?.token ? (
               <CommentForm postId={post._id} error={error} success={success} onSubmit={submitComment} />
@@ -62,7 +84,6 @@ export default function BlogPost({ post }) {
 
 export async function getServerSideProps({ params }) {
   const post = await axios.get(`/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => null);
-  console.log(post);
   if (!post) {
     return {
       notFound: true,
