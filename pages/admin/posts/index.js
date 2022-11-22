@@ -41,7 +41,10 @@ export default function PostPage() {
         </title>
       </Head>
       <AdminLayout>
-        <PostTable postData={postData} onDelete={deletePost} onEdit={editPost} />
+        <div>
+          <h2 className="mb-4 text-lg font-medium">All Posts</h2>
+          <PostTable postData={postData} onDelete={deletePost} onEdit={editPost} />
+        </div>
       </AdminLayout>
     </>
   );

@@ -32,7 +32,6 @@ const navigation = [
   { name: 'Categories', href: '/admin/categories', icon: TagIcon },
   { name: 'Media', href: '/admin/media', icon: PhotoIcon },
   { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon },
-  { name: 'Reports', href: '/admin/reports', icon: ChartBarIcon },
   { name: 'Users', href: '/admin/users', icon: UsersIcon }
 ];
 const userNavigation = [
