@@ -61,3 +61,8 @@ export const loadAllComments = async () => {
   const response = await axios.get(`/comments`);
   return response.data;
 };
+
+export const loadStatsData = async () => {
+  const response = await axios.get(`/stats`);
+  return response.data;
+};
