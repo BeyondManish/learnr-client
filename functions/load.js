@@ -51,3 +51,13 @@ export const loadUser = async (username) => {
   const response = await axios.get(`/user/${username}`);
   return response.data;
 };
+
+export const loadComments = async (postId) => {
+  const response = await axios.get(`/comments/${postId}`);
+  return response.data;
+};
+
+export const loadAllComments = async () => {
+  const response = await axios.get(`/comments`);
+  return response.data;
+};

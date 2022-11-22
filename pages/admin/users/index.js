@@ -24,7 +24,6 @@ export default function AdminUserPage() {
     const answer = confirm("Are you sure you want to delete this user?");
     if (!answer) return;
     await axios.delete(`/user/${_id}`);
-    setPostData(prev => (prev.users.filter(user => user._id !== id)));
   };
 
   const editUser = async (username) => {
