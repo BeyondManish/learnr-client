@@ -15,7 +15,6 @@ export default function BlogPost({ post }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  console.log(post);
 
   // for comment section
   useEffect(async () => {

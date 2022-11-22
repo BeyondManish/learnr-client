@@ -41,7 +41,7 @@ export default function AdminUserPage() {
               <tr>
                 {/* get all the table head */}
                 {
-                  headings.length > 0 && headings.map(heading => (<th className="py-3 pl-4 pr-3 text-sm font-medium tracking-wide text-left text-gray-600 uppercase dark:bg-gray-900 dark:text-gray-200 sm:pl-6">{heading}</th>))
+                  headings.length > 0 && headings.map(heading => (<th key={heading} className="py-3 pl-4 pr-3 text-sm font-medium tracking-wide text-left text-gray-600 uppercase dark:bg-gray-900 dark:text-gray-200 sm:pl-6">{heading}</th>))
                 }
               </tr>
             </thead>
