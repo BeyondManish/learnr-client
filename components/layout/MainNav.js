@@ -20,11 +20,16 @@ export default function MainNav() {
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
+  const [userNavigation, setUserNavigation] = useState([]);
 
   useEffect(() => {
     if (auth.token) {
       loadCurrentUser().then(({ data }) => {
         setUser(data.user);
+        setUserNavigation([
+          { name: 'Edit Profile', href: `/${data.user.username}/edit` },
+          { name: 'Log out', href: '/logout' },
+        ]);
         setUserLoading(false);
       }).catch(err => console.log(err));
     }
@@ -37,12 +42,6 @@ export default function MainNav() {
   const navigation = [
     { name: 'Dashboard', href: '/#', current: true },
   ];
-  const userNavigation = [
-    { name: 'Your Profile', href: `/` },
-    { name: 'Log out', href: '/logout' },
-  ];
-
-
 
   return (
     <>

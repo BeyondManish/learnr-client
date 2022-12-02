@@ -45,8 +45,6 @@ export const getServerSideProps = async ({ params }) => {
   const { username } = params;
   const user = await axios.get(`/user/${username}`).then(res => res.data.data.user).catch(err => null);
   const posts = await axios.get(`/${username}/posts`).then(res => res.data.data.posts).catch(err => null);
-  console.log(posts);
-  console.log(user);
   if (!user) {
     return {
       notFound: true,

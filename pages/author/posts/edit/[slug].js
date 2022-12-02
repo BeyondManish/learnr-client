@@ -1,4 +1,4 @@
-import AdminLayout from "../../../../components/layout/AdminLayout";
+import AuthorLayout from "../../../../components/layout/AuthorLayout";
 import Editor from "rich-markdown-editor";
 import { useState, useEffect, useContext } from "react";
 import MultiSelect from "../../../../components/forms/MultiSelect";
@@ -31,9 +31,6 @@ export default function EditPostPage({ post }) {
   const [success, setSuccess] = useState("");
   const [postFeaturedImage, setPostFeaturedImage] = useState(post.featuredImage);
 
-
-  const slug = router.query.slug;
-
   useEffect(() => {
     loadCategories().then((res) => {
       setCategoriesValue(res.data.categories);
@@ -42,14 +39,13 @@ export default function EditPostPage({ post }) {
 
   // publish post
   const editPost = async () => {
-    console.table({ title, content, categories: selectedCategories, featuredImage: media?.selected._id || postFeaturedImage?._id, isPublished: true });
     axios.put(`/post/edit/${post._id}`, { title, content, categories: selectedCategories, isPublished: true, featuredImage: media?.selected._id || postFeaturedImage?._id || undefined })
       .then(res => {
         console.log(res.data);
         setSuccess(res.data.message);
-        router.push("/admin/posts");
+        router.push("/author/posts");
       })
-      .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
+      .catch(err => { setError(err.response.data.message || err.response.data.errors[0]); });
   };
 
   // save post as draft
@@ -67,7 +63,7 @@ export default function EditPostPage({ post }) {
         </title>
       </Head>
       {/* End of Head */}
-      <AdminLayout>
+      <AuthorLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-3/5">
@@ -145,7 +141,7 @@ export default function EditPostPage({ post }) {
             {/* publish button end */}
           </div>
         </div>
-      </AdminLayout>
+      </AuthorLayout>
     </>
   );
 }

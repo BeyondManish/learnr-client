@@ -1,38 +1,45 @@
-import AdminLayout from "../../../../components/layout/AdminLayout";
+import AuthorLayout from "../../../components/layout/AuthorLayout";
 import Editor from "rich-markdown-editor";
 import { useState, useEffect, useContext } from "react";
-import MultiSelect from "../../../../components/forms/MultiSelect";
+import MultiSelect from "../../../components/forms/MultiSelect";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { Button } from "../../../../components/Buttons";
+import { Button } from "../../../components/Buttons";
 import Link from "next/link";
 import Image from "next/image";
-import { uploadImage } from "../../../../functions/upload";
+import { uploadImage } from "../../../functions/upload";
 import axios from "axios";
-import { loadCategories, loadPosts } from "../../../../functions/load";
-import { ErrorBanner, SuccessBanner } from "../../../../components/Banner";
-import MediaModal from "../../../../components/media/MediaModal";
+import { loadCategories } from "../../../functions/load";
+import { ErrorBanner, SuccessBanner } from "../../../components/Banner";
+import localData from "../../../utils/localData";
+import MediaModal from "../../../components/media/MediaModal";
 import { useRouter } from "next/router";
 import Head from 'next/head';
-import { MediaContext } from "../../../../context/Media";
-import { ThemeContext } from '../../../../context/Theme';
-import { loadPost } from '../../../../functions/load';
+import { MediaContext } from "../../../context/Media";
+import { ThemeContext } from '../../../context/Theme';
 
 
-export default function EditPostPage({ post }) {
+export default function CreatePostPage() {
   const [theme, setTheme] = useContext(ThemeContext);
   const [media, setMedia] = useContext(MediaContext);
+  console.log(theme);
   const router = useRouter();
 
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
+  const [title, setTitle] = useState(localData('postTitle') || "");
+  const [content, setContent] = useState(localData('postContent') || "");
   const [categoriesValue, setCategoriesValue] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState(post.categories);
+  const [selectedCategories, setSelectedCategories] = useState(localData("categories") || []);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [postFeaturedImage, setPostFeaturedImage] = useState(post.featuredImage);
+  const [featuredImage, setFeaturedImage] = useState(localData("featuredImage") || "");
 
-
-  const slug = router.query.slug;
+  const resetFields = () => {
+    console.log("resetting fields");
+    localStorage.removeItem("postTitle");
+    localStorage.removeItem("postContent");
+    localStorage.removeItem("categories");
+    localStorage.removeItem("postFeaturedImage");
+    setMedia({ ...media, selected: "" });
+  };
 
   useEffect(() => {
     loadCategories().then((res) => {
@@ -40,14 +47,23 @@ export default function EditPostPage({ post }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (media.selected) {
+      localStorage.setItem("postFeaturedImage", JSON.stringify(media.selected));
+    }
+  }, [media.selected]);
+
   // publish post
-  const editPost = async () => {
-    console.table({ title, content, categories: selectedCategories, featuredImage: media?.selected._id || postFeaturedImage?._id, isPublished: true });
-    axios.put(`/post/edit/${post._id}`, { title, content, categories: selectedCategories, isPublished: true, featuredImage: media?.selected._id || postFeaturedImage?._id || undefined })
+  const publishPost = async () => {
+    const categories = localData('categories') || [];
+    featuredImage = localData('postFeaturedImage') || "";
+    console.table({ title, content, categories, featuredImage: featuredImage._id, isPublished: true });
+    axios.post('/posts/create-post', { title, content, categories: categories, isPublished: true, featuredImage: featuredImage._id || "" })
       .then(res => {
         console.log(res.data);
         setSuccess(res.data.message);
-        router.push("/admin/posts");
+        resetFields();
+        router.push("/author/posts");
       })
       .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
   };
@@ -67,10 +83,10 @@ export default function EditPostPage({ post }) {
         </title>
       </Head>
       {/* End of Head */}
-      <AdminLayout>
+      <AuthorLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
-          <div className="w-full lg:w-3/5">
+          <div className="w-full lg:w-2/3">
             {error && (
               <ErrorBanner message={error} />
             )}
@@ -90,6 +106,7 @@ export default function EditPostPage({ post }) {
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
+                  localStorage.setItem('postTitle', JSON.stringify(e.target.value));
                 }}
                 name="postTitle"
                 id="postTitle"
@@ -105,13 +122,14 @@ export default function EditPostPage({ post }) {
                 defaultValue={content}
                 onChange={(value) => {
                   setContent(value());
+                  localStorage.setItem("postContent", JSON.stringify(value()));
                 }}
                 uploadImage={(file) => uploadImage(file).then(res => res.url)}
                 dark={theme == "dark" ? true : false}
               />
             </div>
           </div>
-          <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
+          <div className="w-full mt-5 lg:ml-8 lg:w-1/3">
             {/* categories multiselect */}
             <div className="mb-4">
               <MultiSelect label="Categories" values={categoriesValue} selected={selectedCategories} />
@@ -119,9 +137,9 @@ export default function EditPostPage({ post }) {
             {/* categories multiselect end */}
             {/* image upload preview */}
             {
-              (media?.selected || postFeaturedImage) && (
-                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-sm">
-                  <Image className="w-full" src={media.selected || postFeaturedImage.url} layout="responsive" width={720} height={400} />
+              (media?.selected || featuredImage) && (
+                <div className="my-2 overflow-hidden border border-gray-300 rounded-md shadow-md max-h-64 ">
+                  <Image className="object-cover w-full" src={media.selected.url || featuredImage.url} layout="responsive" width={720} height={400} />
                 </div>
               )
             }
@@ -132,8 +150,8 @@ export default function EditPostPage({ post }) {
             </div>
             {/* upload featured image end */}
             {/* publish button */}
-            <div className="flex ">
-              <Button text="Edit" onClick={editPost} />
+            <div className="flex mt-2">
+              <Button text="Publish" onClick={publishPost} />
               <Link href=''>
                 <a
                   className="inline-flex items-center px-4 py-2 ml-2 text-sm font-medium border border-transparent rounded-md hover:bg-gray-300 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -145,17 +163,7 @@ export default function EditPostPage({ post }) {
             {/* publish button end */}
           </div>
         </div>
-      </AdminLayout>
+      </AuthorLayout>
     </>
   );
-}
-
-export async function getServerSideProps({ params }) {
-  const res = await loadPost(params.slug);
-  const post = res.data.post;
-  return {
-    props: {
-      post,
-    },
-  };
 }

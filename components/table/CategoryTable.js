@@ -1,7 +1,7 @@
 import { Badge } from "../Badges";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-export default function CategoryTable({ headings, data }) {
+export default function CategoryTable({ headings, data, showActions = true }) {
   return (
     <div className="overflow-hidden border border-gray-300 dark:border-gray-900 md:rounded-lg">
       <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-900">
@@ -19,16 +19,19 @@ export default function CategoryTable({ headings, data }) {
               <tr key={data.slug} className="">
                 <td className="px-4 py-4">{data.name}</td>
                 <td className="px-4 py-4">{data.slug}</td>
-                <td className="flex items-center px-4 py-4">
-                  <div>
-                    <button className="w-5 h-5 cursor-pointer">
-                      <PencilSquareIcon />
-                    </button> |
-                    <button className="w-5 h-5 cursor-pointer">
-                      <TrashIcon />
-                    </button>
-                  </div>
-                </td>
+                {
+                  showActions && (
+                    <td className="flex items-center px-4 py-4">
+                      <div>
+                        <button className="w-5 h-5 cursor-pointer">
+                          <PencilSquareIcon />
+                        </button> |
+                        <button className="w-5 h-5 cursor-pointer">
+                          <TrashIcon />
+                        </button>
+                      </div>
+                    </td>)
+                }
               </tr>
             )
             )

@@ -24,7 +24,7 @@ export default function AdminCommentPage() {
 
   const deleteUser = async (id) => {
     console.log(id);
-    const answer = confirm("Are you sure you want to delete this user?");
+    const answer = confirm("Are you sure you want to delete this comment?");
     if (!answer) return;
     await axios.delete(`/comment/${id}`);
     setComments(comments.filter((comment) => comment._id !== id));

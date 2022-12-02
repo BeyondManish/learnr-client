@@ -1,12 +1,7 @@
-import { useEffect, useState } from 'react';
-import { loadStatsData } from '../../functions/load';
-
-
 export default function Stats({ stats }) {
 
   return (
     <div>
-      <h3 className="text-lg font-medium leading-6">Admin Dashboard</h3>
       <dl className="grid grid-cols-1 gap-5 mt-5 sm:grid-cols-3">
         {
           stats &&

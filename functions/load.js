@@ -32,12 +32,12 @@ export const loadCurrentUser = async () => {
 };
 
 // load user post
-export const loadUserPost = async (username) => {
+export const loadUserPosts = async (username) => {
   const response = await axios.get(`/${username}/posts`);
   return response.data;
 };
 
-export const loadUserMedia = async (username) => {
+export const loadUserMedias = async (username) => {
   const response = await axios.get(`/${username}/files`);
   return response.data;
 };
@@ -62,7 +62,19 @@ export const loadAllComments = async () => {
   return response.data;
 };
 
+
 export const loadStatsData = async () => {
   const response = await axios.get(`/stats`);
+  return response.data;
+};
+
+
+export const loadUserStats = async () => {
+  const response = await axios.get(`/user/stats`);
+  return response.data;
+};
+
+export const loadUserCommments = async (username) => {
+  const response = await axios.get(`/${username}/categories`);
   return response.data;
 };

@@ -24,18 +24,16 @@ import Avatar from "../Avatar";
 import { loadCurrentUser } from '../../functions/load';
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
-  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, children: [{ name: "Create Post", icon: PencilSquareIcon, href: "/admin/posts/create" }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/admin/posts" }] },
-  { name: 'Categories', href: '/admin/categories', icon: TagIcon },
-  { name: 'Media', href: '/admin/media', icon: PhotoIcon },
-  { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon },
-  { name: 'Users', href: '/admin/users', icon: UsersIcon }
+  { name: 'Dashboard', href: '/author/dashboard', icon: HomeIcon },
+  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, children: [{ name: "Create Post", icon: PencilSquareIcon, href: "/author/posts/create" }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/author/posts" }] },
+  { name: 'Categories', href: '/author/categories', icon: TagIcon },
+  { name: 'Media', href: '/author/media', icon: PhotoIcon },
 ];
 const userNavigation = [
   { name: 'Logout', href: '/logout' },
 ];
 
-export default function AdminLayout({ children }) {
+export default function AuthorLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = useState(null);
@@ -49,11 +47,10 @@ export default function AdminLayout({ children }) {
       loadCurrentUser().then(({ data }) => {
         setUser(data.user);
         let role = data.user.role;
-        if (role == 'admin') {
+        if (role == 'author') {
           setLoading(false);
         } else {
-          if (role == "author") router.push(`/${data.user.role}/dashboard`);
-          else router.push("/");
+          router.push("/");
         }
       }).catch(err => {
         console.log(err);

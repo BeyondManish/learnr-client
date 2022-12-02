@@ -37,6 +37,8 @@ export default function Loginform() {
         setAuth({ token: token, user: user });
         localStorage.setItem("auth", JSON.stringify({ token: token, user: user }));
         setState({ ...state, success: res.data.message, error: "", buttonText: "Login" });
+        console.log(user);
+        if (user.role == "user") return router.push("/");
         router.push(`/${user.role}/dashboard`);
       })
       .catch(err => {

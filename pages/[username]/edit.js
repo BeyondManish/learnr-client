@@ -4,6 +4,7 @@ import MainLayout from "../../components/layout/MainLayout";
 import EditUserForm from '../../components/forms/EditUserForm';
 import { loadCurrentUser } from '../../functions/load';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 // TODO: redirect to the user's profile if the user is the same as the logged in user
 
@@ -42,7 +43,7 @@ export default function EditMyProfile() {
 
 
   const submitForm = async (user) => {
-    await axios.put(`/user/${user.username}`, authenticatedUser).then(({ data }) => data.user).catch(err => null);
+    await axios.put(`/user/${user.username}`, user).then(({ data }) => data.user).catch(err => null);
     alert('Profile updated successfully!');
   };
 

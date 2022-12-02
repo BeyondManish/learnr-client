@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from '../../utils/classNames';
-
+import { uploadImage } from '../../functions/upload';
 
 export default function EditUserForm({ onSubmit, editUser, onCancel, className, showRole = showRole || false }) {
   const [user, setUser] = useState(editUser);
@@ -112,16 +112,16 @@ export default function EditUserForm({ onSubmit, editUser, onCancel, className, 
                   <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </span>
-              <button
-                type="file"
-                className="px-3 py-2 ml-5 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Change
-              </button>
+              <input type="file" id="myFile" name="filename" onChange={(e) => {
+                uploadImage(e.target.files[0]).then((res) => {
+                  setUser({ ...user, photo: res.url });
+                });
+              }} />
             </div>
           </div>
         </div>
       </div>
+      <pre>{JSON.stringify(user, null, 4)}</pre>
 
       <div className="pt-5">
         <div className="flex justify-end">
@@ -135,7 +135,7 @@ export default function EditUserForm({ onSubmit, editUser, onCancel, className, 
           <button
             type="submit"
             className="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            onClick={(e) => { e.preventDefault(); onSubmit(user); }}
+            onClick={(e) => { e.preventDefault(); console.log(user); onSubmit(user); }}
           >
             Save
           </button>

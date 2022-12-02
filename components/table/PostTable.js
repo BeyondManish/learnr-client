@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Badge } from "../Badges";
 
-export default function PostTable({ postData, onDelete, onEdit }) {
+export default function PostTable({ postData, onDelete, onEdit, roleURL }) {
   const headings = ["Title", "Author", "Categories", "Date", "Actions"];
 
   return (
@@ -20,7 +20,7 @@ export default function PostTable({ postData, onDelete, onEdit }) {
           {
             postData.posts.map((post) => (
               <tr key={post.slug} className="">
-                <td className="px-4 py-4"><a className='hover:underline' href={`/admin/posts/edit/${post.slug}`}>
+                <td className="px-4 py-4"><a className='hover:underline' href={`/${roleURL}/posts/edit/${post.slug}`}>
                   {post.title}
                 </a></td>
                 <td>{post.author.firstname + " " + post.author.lastname}</td>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import AdminLayout from "../../../components/layout/AdminLayout";
+import AuthorLayout from "../../../components/layout/AuthorLayout";
 import { ErrorBanner, SuccessBanner } from "../../../components/Banner";
 import axios from "axios";
 import CategoryTable from "../../../components/table/CategoryTable";
@@ -34,7 +34,7 @@ export default function CategoriesAdminPage() {
     axios.post(`category/create`, { name })
       .then((response) => {
         setState({ ...state, success: response.data.message, error: "" });
-        router.push("/admin/categories");
+        router.push("/author/categories");
       })
       .catch((err) => {
         console.log(err.response);
@@ -43,7 +43,7 @@ export default function CategoriesAdminPage() {
   };
 
   return (
-    <AdminLayout>
+    <AuthorLayout>
       <h1 className="mb-4 text-xl font-semibold">Create Category</h1>
       <div className="p-6 bg-white dark:bg-gray-900 dark:text-gray-100 rounded-md w-[50%]">
         {/* Create category form */}
@@ -83,9 +83,9 @@ export default function CategoriesAdminPage() {
       </div>
       <h1 className="my-4 text-xl font-semibold">All Categories</h1>
       <div>
-        <CategoryTable headings={["name", "slug", "action"]} data={postData.categories} />
+        <CategoryTable headings={["name", "slug"]} data={postData.categories} showActions={false} />
       </div>
 
-    </AdminLayout>
+    </AuthorLayout>
   );
 }
