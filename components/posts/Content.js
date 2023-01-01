@@ -20,7 +20,7 @@ export default function Content({ post }) {
       <div className='px-8'>
         {/* Author box */}
         <div className="flex pt-6">
-          <Avatar image={post.author.image} />
+          <Avatar image={post.author.photo} />
           <div className="flex flex-col ml-2">
             <Link href={`/${post.author.username}`}>
               <span className="block text-sm font-medium truncate cursor-pointer hover:text-indigo-600">{post.author.firstname + post.author.lastname}</span>

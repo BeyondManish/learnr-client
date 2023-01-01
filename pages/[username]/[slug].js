@@ -6,6 +6,7 @@ import { useState, useContext, useEffect } from 'react';
 import axios from "axios";
 import Head from 'next/head';
 import Link from 'next/link';
+import Avatar from '../../components/Avatar';
 import { loadComments } from '../../functions/load';
 import dayjs from 'dayjs';
 
@@ -55,8 +56,8 @@ export default function BlogPost({ post }) {
           {(comments.length > 0) && comments.map((comment) => (
             <div key={comment._id} className="flex flex-col mb-4">
               <div className="flex items-center mb-2">
-                <img src={comment.author.photo} alt="profile picture" className="w-10 h-10 mr-4 rounded-full" />
-                <div className="flex flex-col">
+                <Avatar image={comment.author.photo} />
+                <div className="flex flex-col ml-2">
                   <div>
                     <Link href={`/${comment.author.username}`}>
                       <a className="text-xs font-medium text-gray-900 dark:text-gray-100">{comment.author.firstname}</a>
