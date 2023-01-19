@@ -14,7 +14,7 @@ import { loadCurrentUser } from '../../functions/load';
 import Avatar from '../Avatar';
 import { Menu, Transition, Fragment } from '@headlessui/react';
 
-export default function MainNav() {
+export default function MainNav({ showSearch = false }) {
 
   const router = useRouter();
   const [auth, setAuth] = useContext(AuthContext);
@@ -58,8 +58,8 @@ export default function MainNav() {
       >
         {({ open }) => (
           <>
-            <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-              <div className="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
+            <div className="px-4 py-4 mx-auto max-w-7xl lg:px-0">
+              <div className="relative flex justify-between lg:gap-8">
                 <div className="flex md:left-0 md:inset-y-0 lg:static xl:col-span-2">
                   {/* Logo starts */}
                   <div className="flex items-center flex-shrink-0">
@@ -67,11 +67,17 @@ export default function MainNav() {
                   </div>
                   {/* Logo ends */}
                 </div>
-                <div className="flex-1 min-w-0 lg:px-0 xl:col-span-6">
-                  <div className="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                    <Search />
-                  </div>
-                </div>
+                {/* Search begins */}
+                {
+                  showSearch && (
+                    <div className="flex-1 min-w-0 lg:px-0 xl:col-span-6">
+                      <div className="flex items-center px-6 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
+                        <Search />
+                      </div>
+                    </div>
+                  )
+                }
+                {/* Search ends */}
                 <div className="flex items-center md:right-0 md:inset-y-0 lg:hidden">
                   {/* Mobile menu button */}
                   <Popover.Button className="inline-flex items-center justify-center p-2 -mx-2 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">

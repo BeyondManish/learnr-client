@@ -23,7 +23,6 @@ import { ToggleButton } from "../Buttons";
 import Search from '../forms/Search';
 import { useRouter } from 'next/router';
 import Avatar from "../Avatar";
-import axios from 'axios';
 import { loadCurrentUser } from '../../functions/load';
 
 const navigation = [
@@ -38,7 +37,7 @@ const userNavigation = [
   { name: 'Logout', href: '/logout' },
 ];
 
-export default function AdminLayout({ children }) {
+export default function AdminLayout({ showSearch, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = useState(null);
@@ -263,61 +262,65 @@ export default function AdminLayout({ children }) {
                     <Bars3Icon className="w-6 h-6" aria-hidden="true" />
                   </button>
                   {/* Search desktop */}
-                  <div className="flex justify-between flex-1 px-4">
-                    <div className='flex items-center justify-center w-full'>
-                      <div className="flex items-center justify-center flex-1 max-w-xl">
-                        <Search />
-                      </div>
-                    </div>
-                    {/* notif, avatar and toggle button */}
-                    <div className='flex items-center'>
-                      {/* notification and avatar, show only on login */}
-                      <div className="flex items-center ml-4 md:ml-6">
-
-                        {/* Profile dropdown */}
-                        <Menu as="div" className="relative mx-3">
-                          <div>
-                            <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                              <span className="sr-only">Open user menu</span>
-                              <Avatar image={user.photo} />
-                            </Menu.Button>
+                  {
+                    showSearch && (
+                      <div className="flex justify-between flex-1 px-4">
+                        <div className='flex items-center justify-center w-full'>
+                          <div className="flex items-center justify-center flex-1 max-w-xl">
+                            <Search />
                           </div>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              {userNavigation.map((item) => (
-                                <Menu.Item key={item.name}>
-                                  {({ active }) => (
-                                    <a
-                                      href={item.href}
-                                      className={classNames(
-                                        active ? 'bg-gray-100' : '',
-                                        'block px-4 py-2 text-sm text-gray-700'
+                        </div>
+                        {/* notif, avatar and toggle button */}
+                        <div className='flex items-center'>
+                          {/* notification and avatar, show only on login */}
+                          <div className="flex items-center ml-4 md:ml-6">
+
+                            {/* Profile dropdown */}
+                            <Menu as="div" className="relative mx-3">
+                              <div>
+                                <Menu.Button className="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                  <span className="sr-only">Open user menu</span>
+                                  <Avatar image={user.photo} />
+                                </Menu.Button>
+                              </div>
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                              >
+                                <Menu.Items className="absolute right-0 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  {userNavigation.map((item) => (
+                                    <Menu.Item key={item.name}>
+                                      {({ active }) => (
+                                        <a
+                                          href={item.href}
+                                          className={classNames(
+                                            active ? 'bg-gray-100' : '',
+                                            'block px-4 py-2 text-sm text-gray-700'
+                                          )}
+                                        >
+                                          {item.name}
+                                        </a>
                                       )}
-                                    >
-                                      {item.name}
-                                    </a>
-                                  )}
-                                </Menu.Item>
-                              ))}
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
+                                    </Menu.Item>
+                                  ))}
+                                </Menu.Items>
+                              </Transition>
+                            </Menu>
+                          </div>
+                          {/* notification and avatar ends */}
+                          {/* theme toggle button */}
+                          <ToggleButton />
+                          {/* end theme toggle */}
+                        </div>
+                        {/* end avatar and toggle button */}
                       </div>
-                      {/* notification and avatar ends */}
-                      {/* theme toggle button */}
-                      <ToggleButton />
-                      {/* end theme toggle */}
-                    </div>
-                    {/* end avatar and toggle button */}
-                  </div>
+                    )
+                  }
                 </div>
                 {/* Admin nav ends */}
                 {/* main of admin */}
