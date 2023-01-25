@@ -6,7 +6,7 @@ import { ToggleButton } from '../Buttons';
 import classNames from "../../utils/classNames";
 import Search from '../forms/Search';
 import Image from 'next/image';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../context/Auth';
 import { loadCurrentUser } from '../../functions/load';
