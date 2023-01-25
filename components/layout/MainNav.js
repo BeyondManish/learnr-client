@@ -6,13 +6,12 @@ import { ToggleButton } from '../Buttons';
 import classNames from "../../utils/classNames";
 import Search from '../forms/Search';
 import Image from 'next/image';
-import localData from '../../utils/localData';
 import { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../context/Auth';
 import { loadCurrentUser } from '../../functions/load';
 import Avatar from '../Avatar';
-import { Menu, Transition, Fragment } from '@headlessui/react';
+import { Menu, Transition } from '@headlessui/react';
 
 export default function MainNav({ showSearch = false }) {
 
