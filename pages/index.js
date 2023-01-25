@@ -1,10 +1,9 @@
 import Head from 'next/head';
-import MainLayout from '../components/layout/MainLayout';
 import Card from '../components/posts/Card';
 import { useState, useEffect, useContext } from "react";
 import { PostContext } from "../context/Post";
 import { loadCategories, loadPosts } from '../functions/load';
-import Link from 'next/link';
+import HomeLayout from '../components/layout/HomeLayout';
 
 export default function Home() {
 
@@ -27,45 +26,23 @@ export default function Home() {
         <meta name="description" content="Learnr is a community of the learners. You can learn web development.." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainLayout>
-        {loading ? ("") : (
-          postData.posts.length > 0 && postData.categories.length > 0 ? (
-            <div className='flex justify-center w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
-              <div className='w-full md:w-3/5 lg:w-2/5'>
+      <HomeLayout showSearch={true}>
+        <div className='max-w-6xl mx-auto'>
+          {loading ? ("") : (
+            postData.posts.length > 0 && postData.categories.length > 0 ? (
+              <div className='w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
                 {
                   postData.posts.map((post) => (
                     <Card key={post.slug} post={post} />
                   ))
                 }
               </div>
-              <aside className='hidden md:block'>
-                <div className='ml-6'>
-                  {postData.categories.length > 0 ?
-                    (<>
-                      <h2 className='text-2xl font-semibold'>Categories</h2>
-                      <ul className='flex flex-wrap max-w-xs mt-2'>
-                        {postData.categories.map((category) => (
-                          <Link key={category.slug} href={`/category/${category.slug}`}>
-                            <a>
-                              <li className='flex items-center justify-between px-4 py-2 my-2 mr-3 text-sm font-medium text-gray-700 bg-white rounded-md dark:bg-gray-900 dark:text-gray-100'>
-                                <span>{category.name}</span>
-                              </li>
-                            </a>
-                          </Link>
-                        ))}
-                      </ul>
-                    </>
-                    )
-                    : ""
-                  }
-                </div>
-              </aside>
-            </div>
-          ) :
-            (<div className='w-full text-gray-900 bg-white rounded-md md:w-3/5 lg:w-2/5 lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>There is nothing here...</p></div>)
-        )
-        }
-      </MainLayout >
+            ) :
+              (<div className='w-full text-gray-900 bg-white rounded-md md:w-3/5 lg:w-2/5 lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>Wow, Such Empty!</p></div>)
+          )
+          }
+        </div>
+      </HomeLayout>
     </div >
   );
 };
