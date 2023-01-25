@@ -18,7 +18,6 @@ export default function Home() {
     loadCategories().then(({ data }) => setPostData(prev => ({ ...prev, categories: data.categories })));
   }, []);
 
-  console.log(postData);
   return (
     <div>
       <Head>
@@ -38,7 +37,7 @@ export default function Home() {
                 }
               </div>
             ) :
-              (<div className='w-full text-gray-900 bg-white rounded-md md:w-3/5 lg:w-2/5 lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>Wow, Such Empty!</p></div>)
+              (<div className='w-full text-gray-900 bg-white rounded-md lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>Wow, Such Empty!</p></div>)
           )
           }
         </div>

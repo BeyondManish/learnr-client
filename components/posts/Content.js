@@ -7,6 +7,8 @@ import dayjs from 'dayjs';
 import { ThemeContext } from '../../context/Theme';
 import { useContext } from 'react';
 
+import YouTubeEmbed from '../../components/embed/YoutubeEmbed';
+
 export default function Content({ post }) {
   const [theme, toggleTheme] = useContext(ThemeContext);
 
@@ -37,7 +39,20 @@ export default function Content({ post }) {
           {post.categories.map(item => (<Link key={item.slug} href={`/category/${item.slug}`}><a><span className="mr-1.5"><Badge title={item.name} /></span></a></Link>))}
         </div>
       </div>
-      <Editor dark={theme === "dark" ? true : false} defaultValue={post.content} readOnly={true} readOnlyWriteCheckboxes={true} />
+      <Editor dark={theme === "dark" ? true : false} defaultValue={post.content} readOnly={true} readOnlyWriteCheckboxes={true} embeds={[
+        {
+          title: 'YouTube',
+          icon: () => <DocumentTextIcon />,
+          keywords: 'youtube video',
+          defaultHidden: false,
+          matcher: (url) => {
+            return url.match(
+              /^https?:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/
+            );
+          },
+          component: YouTubeEmbed,
+        },
+      ]} />
 
     </div>
   );

@@ -6,7 +6,7 @@ export default function HomeLayout({ showSearch, children }) {
     <MainLayout showSearch={showSearch}>
       <div className="flex justify-center w-full h-full">
         <div className='flex justify-center md:w-[65%] w-full'>
-          <aside className='hidden md:block md:w-1/5'>
+          <aside className='sticky top-0 hidden md:block md:w-1/5'>
             <Sidebar className="font-semibold" />
           </aside>
           <div className='w-3/5'>

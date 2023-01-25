@@ -1,5 +1,6 @@
 import AdminLayout from "../../../components/layout/AdminLayout";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { deleteUser } from '../../../functions/user';
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/router';
@@ -17,14 +18,6 @@ export default function AdminUserPage() {
       })
       .catch(err => console.log(err));
   }, []);
-
-
-  const deleteUser = async (id) => {
-    console.log(id);
-    const answer = confirm("Are you sure you want to delete this user?");
-    if (!answer) return;
-    await axios.delete(`/user/${_id}`);
-  };
 
   const editUser = async (username) => {
     router.push(`/admin/users/edit/${username}`);
@@ -58,7 +51,7 @@ export default function AdminUserPage() {
                         <button className="w-5 h-5 cursor-pointer" onClick={() => editUser(user.username)}>
                           <PencilSquareIcon />
                         </button> |
-                        <button className="w-5 h-5 cursor-pointer" onClick={() => deleteUser(user._id)}>
+                        <button className="w-5 h-5 cursor-pointer" onClick={() => deleteUser(user.username)}>
                           <TrashIcon />
                         </button>
                       </div>

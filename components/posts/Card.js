@@ -8,7 +8,7 @@ export default function PostCard({ post }) {
     <div className="w-full mb-4 overflow-hidden bg-white border border-gray-300 md:rounded-lg dark:border-gray-700 dark:bg-gray-900">
       {
         post.featuredImage && (
-          <Image className="object-cover w-full" src={post.featuredImage.url} layout="responsive" width={720} height={400} />
+          <Image className="object-cover w-full" src={post.featuredImage.url} loading="lazy" layout="responsive" width={720} height={400} />
         )
       }
       <div className="p-4">

@@ -4,8 +4,9 @@ import ListIcon from '../icons/ListIcon';
 import CourseIcon from '../icons/CourseIcon';
 import HashtagIcon from '../icons/HashtagIcon';
 import QuizIcon from '../icons/QuizIcon';
+import BooksIcon from '../icons/BooksIcon';
 
-const sideNavItems = [{ "title": "Home", "icon": HomeIcon, "href": "/" }, { "title": "Saved List", "icon": ListIcon, "href": "/saved-list" }, { "title": "Courses", "icon": CourseIcon, "href": "/courses" }, { "title": "Tags", "icon": HashtagIcon, "href": "/tags" }, { "title": "Quizzes", "icon": QuizIcon, "href": "/quizzes" }];
+const sideNavItems = [{ "title": "Home", "icon": HomeIcon, "href": "/" }, { "title": "Saved List", "icon": ListIcon, "href": "/saved-list" }, { "title": "Courses", "icon": CourseIcon, "href": "/courses" }, { "title": "Tags", "icon": HashtagIcon, "href": "/tags" }, { "title": "Quizzes", "icon": QuizIcon, "href": "/quizzes" }, { "title": "Bookism", "icon": BooksIcon, "href": "https://bookism.learnr.app" }];
 
 const SideNavItem = ({ title, icon, href }) => {
   const Icon = icon;

@@ -2,7 +2,7 @@ import AdminLayout from "../../../components/layout/AdminLayout";
 import Editor from "rich-markdown-editor";
 import { useState, useEffect, useContext } from "react";
 import MultiSelect from "../../../components/forms/MultiSelect";
-import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { ArrowUpTrayIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +17,7 @@ import Head from 'next/head';
 import { MediaContext } from "../../../context/Media";
 import { ThemeContext } from '../../../context/Theme';
 
+import YouTubeEmbed from '../../../components/embed/YoutubeEmbed';
 
 export default function CreatePostPage() {
   const [theme, setTheme] = useContext(ThemeContext);
@@ -126,6 +127,20 @@ export default function CreatePostPage() {
                 }}
                 uploadImage={(file) => uploadImage(file).then(res => res.url)}
                 dark={theme == "dark" ? true : false}
+                embeds={[
+                  {
+                    title: 'YouTube',
+                    icon: () => <DocumentTextIcon />,
+                    keywords: 'youtube video',
+                    defaultHidden: false,
+                    matcher: (url) => {
+                      return url.match(
+                        /^https?:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/
+                      );
+                    },
+                    component: YouTubeEmbed,
+                  },
+                ]}
               />
             </div>
           </div>
