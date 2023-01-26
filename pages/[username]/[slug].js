@@ -84,7 +84,7 @@ export default function BlogPost({ post }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const post = await axios.get(`/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => null);
+  const post = await axios.get(`${process.env.API}/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => console.log(err));
   if (!post) {
     return {
       notFound: true,

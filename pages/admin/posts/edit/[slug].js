@@ -153,6 +153,11 @@ export default function EditPostPage({ post }) {
 export async function getServerSideProps({ params }) {
   const res = await loadPost(params.slug);
   const post = res.data.post;
+  if (!post) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
       post,

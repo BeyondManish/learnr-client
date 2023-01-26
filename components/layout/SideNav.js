@@ -22,7 +22,7 @@ const SideNavItem = ({ title, icon, href }) => {
   );
 };
 
-export default function Sidebar() {
+export default function SideNav() {
   return (
     <div className='w-full'>
       <nav>

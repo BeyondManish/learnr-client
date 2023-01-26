@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { PostContext } from "../context/Post";
 import { loadCategories, loadPosts } from '../functions/load';
 import HomeLayout from '../components/layout/HomeLayout';
+import EmptyCard from '../components/cards/Empty';
 
 export default function Home() {
 
@@ -26,7 +27,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomeLayout showSearch={true}>
-        <div className='max-w-6xl mx-auto'>
+        <div className='w-full'>
           {loading ? ("") : (
             postData.posts.length > 0 && postData.categories.length > 0 ? (
               <div className='w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
@@ -37,8 +38,7 @@ export default function Home() {
                 }
               </div>
             ) :
-              (<div className='w-full text-gray-900 bg-white rounded-md lg:p-8 dark:bg-gray-900 dark:text-gray-50'><p>Wow, Such Empty!</p></div>)
-          )
+              (<EmptyCard text={"Wow, Such Empty!"} />))
           }
         </div>
       </HomeLayout>

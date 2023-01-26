@@ -17,7 +17,7 @@ export const loadPosts = async () => {
 };
 
 export const loadPost = async (slug) => {
-  const response = await axios.get(`/post/${slug}`);
+  const response = await axios.get(`${process.env.API}/post/${slug}`);
   return response.data;
 };
 
