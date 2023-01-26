@@ -3,7 +3,7 @@ import MainLayout from "../../components/layout/MainLayout";
 import CommentForm from "../../components/forms/CommentForm";
 import { AuthContext } from '../../context/Auth';
 import { useState, useContext, useEffect } from 'react';
-import axios from "axios";
+import axios from "../../utils/axios";
 import Head from 'next/head';
 import Link from 'next/link';
 import Avatar from '../../components/Avatar';

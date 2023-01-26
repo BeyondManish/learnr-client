@@ -17,13 +17,11 @@ export function AuthProvider({ children }) {
   if (process.server) {
     axios.defaults.baseURL = process.env.API; // the client is running in server
     // configure the ssl
-    axios.defaults.httpsAgent = agent;
     axios.defaults.headers.common = {
       "Authorization": `Bearer ${auth.token}`
     };
   } else {
     axios.defaults.baseURL = process.env.NEXT_PUBLIC_API;
-    axios.defaults.httpsAgent = agent;
     axios.defaults.headers.common = {
       "Authorization": `Bearer ${auth.token}`
     };
