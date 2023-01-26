@@ -1,6 +1,8 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import localData from "../utils/localData";
+import https from "https";
+
 
 export const AuthContext = createContext();
 
@@ -10,6 +12,10 @@ export function AuthProvider({ children }) {
   // configure axios defaults
   if (process.server) {
     axios.defaults.baseURL = process.env.API; // the client is running in server
+    // configure the ssl
+    axios.defaults.httpsAgent = new https.Agent({
+      rejectUnauthorized: false
+    });
     axios.defaults.headers.common = {
       "Authorization": `Bearer ${auth.token}`
     };
