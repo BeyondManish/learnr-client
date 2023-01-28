@@ -1,8 +1,7 @@
 import { AuthContext } from '../../context/Auth';
 import { useState, useContext, useEffect } from 'react';
 import MainLayout from "../../components/layout/MainLayout";
-import customAxios from '../../utils/customAxios';
-import axios from 'axios';
+import axios from '../../utils/axios';
 import EditUserForm from '../../components/forms/EditUserForm';
 import { loadCurrentUser } from '../../functions/load';
 import { useRouter } from 'next/router';

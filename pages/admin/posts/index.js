@@ -3,7 +3,7 @@ import AdminLayout from "../../../components/layout/AdminLayout";
 import { useEffect, useContext } from "react";
 import { PostContext } from "../../../context/Post";
 import { loadPosts } from "../../../functions/load";
-import axios from "axios";
+import axios from "../../../utils/axios";
 import { useRouter } from 'next/router';
 import PostTable from '../../../components/table/PostTable';
 
