@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../utils/axios';
 import MainLayout from '../../components/layout/MainLayout';
 import MainNav from '../../components/layout/MainNav';
 import Image from 'next/image';
