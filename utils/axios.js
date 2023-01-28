@@ -3,7 +3,7 @@ import https from 'https';
 
 export default axios.create({
   baseURL: process.env.api,
-  httpAgent: new https.Agent({
+  httpsAgent: new https.Agent({
     rejectUnauthorized: false
   }),
 });
