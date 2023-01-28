@@ -25,7 +25,7 @@ export default function Content({ post }) {
           <Avatar image={post.author.photo} />
           <div className="flex flex-col ml-2">
             <Link href={`/${post.author.username}`}>
-              <span className="block text-sm font-medium truncate cursor-pointer hover:text-indigo-600">{post.author.firstname + post.author.lastname}</span>
+              <span className="block text-sm font-medium truncate cursor-pointer hover:text-indigo-600">{post.author.firstname + " " + post.author.lastname}</span>
             </Link>
             <span className="block text-sm font-medium text-gray-500 truncate dark:text-gray-400">@{post.author.username} • {dayjs(post.createdAt).format("MMM D, YYYY")}</span>
           </div>

@@ -3,7 +3,8 @@ import MainLayout from "../../components/layout/MainLayout";
 import CommentForm from "../../components/forms/CommentForm";
 import { AuthContext } from '../../context/Auth';
 import { useState, useContext, useEffect } from 'react';
-import axios from "../../utils/axios";
+import customAxios from "../../utils/customAxios";
+import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import Avatar from '../../components/Avatar';
@@ -84,7 +85,7 @@ export default function BlogPost({ post }) {
 }
 
 export async function getServerSideProps({ params }) {
-  const post = await axios.get(`${process.env.API}/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => console.log(err));
+  const post = await customAxios.get(`${process.env.API}/post/${params.slug}`).then(({ data }) => data.data.post).catch((err) => console.log(err));
   if (!post) {
     return {
       notFound: true,

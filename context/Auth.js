@@ -1,12 +1,6 @@
 import axios from "axios";
 import { createContext, useState } from "react";
 import localData from "../utils/localData";
-import https from "https";
-
-//setup the header
-const agent = new https.Agent({
-  rejectUnauthorized: false
-});
 
 export const AuthContext = createContext();
 
