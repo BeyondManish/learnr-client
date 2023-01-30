@@ -1,22 +1,23 @@
-import AdminLayout from "../../../../components/layout/AdminLayout";
 import Editor from "rich-markdown-editor";
 import { useState, useEffect, useContext } from "react";
-import MultiSelect from "../../../../components/forms/MultiSelect";
-import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { Button } from "../../../../components/Buttons";
 import Link from "next/link";
 import Image from "next/image";
-import { uploadImage } from "../../../../functions/upload";
-import axios from "axios";
-import { loadCategories, loadPosts } from "../../../../functions/load";
-import { ErrorBanner, SuccessBanner } from "../../../../components/Banner";
-import MediaModal from "../../../../components/media/MediaModal";
-import { useRouter } from "next/router";
+import axios from "../../../../utils/axios";
 import Head from 'next/head';
+import { useRouter } from "next/router";
+
+// contexts
 import { MediaContext } from "../../../../context/Media";
 import { ThemeContext } from '../../../../context/Theme';
-import { loadPost } from '../../../../functions/load';
 
+// components
+import UserLayout from "../../../../components/layout/UserLayout";
+import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { Button } from "../../../../components/Buttons";
+import { uploadImage } from "../../../../functions/upload";
+import { loadPost } from "../../../../functions/load";
+import { ErrorBanner, SuccessBanner } from "../../../../components/Banner";
+import MediaModal from "../../../../components/media/MediaModal";
 
 export default function EditPostPage({ post }) {
   const [theme, setTheme] = useContext(ThemeContext);
@@ -25,37 +26,29 @@ export default function EditPostPage({ post }) {
 
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [categoriesValue, setCategoriesValue] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState(post.categories);
+  const [tags, setTags] = useState(post.tags || "");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [postFeaturedImage, setPostFeaturedImage] = useState(post.featuredImage);
 
-
-  const slug = router.query.slug;
-
-  useEffect(() => {
-    loadCategories().then((res) => {
-      setCategoriesValue(res.data.categories);
-    });
-  }, []);
-
   // publish post
   const editPost = async () => {
-    console.table({ title, content, categories: selectedCategories, featuredImage: media.selected._id || postFeaturedImage._id, isPublished: true });
-    axios.put(`/post/edit/${post._id}`, { title, content, categories: selectedCategories, isPublished: true, featuredImage: media.selected._id || postFeaturedImage._id || "" })
-      .then(res => {
-        console.log(res.data);
-        setSuccess(res.data.message);
-        router.push("/admin/posts");
-      })
-      .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
+    // convert the tags into array
+    const tagsArray = tags.split(",").map(tag => tag.trim());
+
+    console.table({ title, content, tags: tagsArray, featuredImage: media.selected?._id || postFeaturedImage?._id, isPublished: true });
+    // axios.put(`/post/edit/${post._id}`, { title, content, tags: tags, isPublished: true, featuredImage: media.selected?._id || postFeaturedImage?._id || "" })
+    //   .then(res => {
+    //     setSuccess(res.data.message);
+    //     router.push("/user/posts");
+    //   })
+    //   .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
   };
 
   // save post as draft
   const savePost = async () => {
-    console.table({ title, content, categories, featuredImage: featuredImage ? featuredImage._id : "", isPublished: false });
-    // await axios.post('/posts/create-post', { title, content, categories: categories, featuredImage: featuredImageURL ? featuredImage : "", isPublished: false });
+    console.table({ title, content, tags, featuredImage: featuredImage ? featuredImage._id : "", isPublished: false });
+    // await axios.post('/posts/create-post', { title, content, tags: tags, featuredImage: featuredImageURL ? featuredImage : "", isPublished: false });
   };
 
   return (
@@ -63,11 +56,11 @@ export default function EditPostPage({ post }) {
       {/* Head for the page */}
       <Head>
         <title>
-          Create Post | Learnr
+          Edit Post | Learnr
         </title>
       </Head>
       {/* End of Head */}
-      <AdminLayout>
+      <UserLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-3/5">
@@ -112,11 +105,24 @@ export default function EditPostPage({ post }) {
             </div>
           </div>
           <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
-            {/* categories multiselect */}
+            {/* tags multiselect */}
             <div className="mb-4">
-              <MultiSelect label="Categories" values={categoriesValue} selected={selectedCategories} />
+              <label htmlFor="tags" className="text-sm">
+                Tags
+              </label>
+              <input
+                type="text"
+                value={tags}
+                onChange={(e) => {
+                  setTags(e.target.value);
+                }}
+                name="tags"
+                id="tags"
+                className="block w-full text-lg border-gray-300 rounded-md shadow-sm dark:bg-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Machine Learning, Marketing, ... (max 4)" required
+              />
             </div>
-            {/* categories multiselect end */}
+            {/* tags multiselect end */}
             {/* image upload preview */}
             {
               (media?.selected || postFeaturedImage) && (
@@ -145,7 +151,7 @@ export default function EditPostPage({ post }) {
             {/* publish button end */}
           </div>
         </div>
-      </AdminLayout>
+      </UserLayout>
     </>
   );
 }

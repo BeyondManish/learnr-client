@@ -2,8 +2,6 @@ import { Fragment, useState, useContext } from 'react';
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react';
 import { useEffect } from 'react';
 import {
-  BellIcon,
-  ChartBarIcon,
   HomeIcon,
   Bars3Icon,
   XMarkIcon,
@@ -26,18 +24,14 @@ import Avatar from "../Avatar";
 import { loadCurrentUser } from '../../functions/load';
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
-  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, children: [{ name: "Create Post", icon: PencilSquareIcon, href: "/admin/posts/create" }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/admin/posts" }] },
-  { name: 'Categories', href: '/admin/categories', icon: TagIcon },
-  { name: 'Media', href: '/admin/media', icon: PhotoIcon },
-  { name: 'Comments', href: '/admin/comments', icon: ChatBubbleBottomCenterTextIcon },
-  { name: 'Users', href: '/admin/users', icon: UsersIcon }
+  { name: 'Dashboard', href: '/user/dashboard', icon: HomeIcon },
+  { name: 'Posts', href: '#', icon: ClipboardDocumentListIcon, children: [{ name: "Create Post", icon: PencilSquareIcon, href: "/user/posts/create" }, { name: "All Posts", icon: ClipboardDocumentIcon, href: "/user/posts" }] },
 ];
 const userNavigation = [
   { name: 'Logout', href: '/logout' },
 ];
 
-export default function AdminLayout({ showSearch, children }) {
+export default function UserLayout({ showSearch, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = useState(null);
@@ -50,13 +44,7 @@ export default function AdminLayout({ showSearch, children }) {
     if (auth?.token) {
       loadCurrentUser().then(({ data }) => {
         setUser(data.user);
-        let role = data.user.role;
-        if (role == 'admin') {
-          setLoading(false);
-        } else {
-          if (role == "author") router.push(`/${data.user.role}/dashboard`);
-          else router.push("/");
-        }
+        setLoading(false);
       }).catch(err => {
         console.log(err);
         router.push('/login');
@@ -251,7 +239,7 @@ export default function AdminLayout({ showSearch, children }) {
               </div>
               {/* Sidebar ends */}
               <div className="flex flex-col flex-1 md:pl-64">
-                {/* Admin nav */}
+                {/* User nav */}
                 <div className="sticky top-0 z-20 flex flex-shrink-0 h-16 bg-white shadow dark:bg-gray-900 dark:text-gray-100">
                   <button
                     type="button"
@@ -322,8 +310,8 @@ export default function AdminLayout({ showSearch, children }) {
                     )
                   }
                 </div>
-                {/* Admin nav ends */}
-                {/* main of admin */}
+                {/* User nav ends */}
+                {/* main of User */}
                 <main className="flex-1 max-w-full min-h-full p-4 rounded-md md:p-8">
                   {children}
                 </main>

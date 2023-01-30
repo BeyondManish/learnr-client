@@ -1,5 +1,5 @@
 import Head from "next/head";
-import AdminLayout from "../../../components/layout/AdminLayout";
+import UserLayout from "../../../components/layout/UserLayout";
 import { useEffect, useContext } from "react";
 import { PostContext } from "../../../context/Post";
 import { loadPosts } from "../../../functions/load";
@@ -40,12 +40,12 @@ export default function PostPage() {
           All Posts | Learnr Admin
         </title>
       </Head>
-      <AdminLayout>
+      <UserLayout>
         <div>
           <h2 className="mb-4 text-lg font-medium">All Posts</h2>
           <PostTable postData={postData} onDelete={deletePost} onEdit={editPost} />
         </div>
-      </AdminLayout>
+      </UserLayout>
     </>
   );
 }

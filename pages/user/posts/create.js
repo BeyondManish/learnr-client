@@ -1,21 +1,26 @@
-import AdminLayout from "../../../components/layout/AdminLayout";
 import Editor from "rich-markdown-editor";
+import Link from "next/link";
+import Image from "next/image";
+import Head from 'next/head';
 import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
+import axios from "../../../utils/axios";
+
+// context
+import { MediaContext } from "../../../context/Media";
+import { ThemeContext } from '../../../context/Theme';
+
+// components
+import UserLayout from "../../../components/layout/UserLayout";
 import MultiSelect from "../../../components/forms/MultiSelect";
 import { ArrowUpTrayIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
-import Link from "next/link";
-import Image from "next/image";
 import { uploadImage } from "../../../functions/upload";
-import axios from "axios";
 import { loadCategories } from "../../../functions/load";
 import { ErrorBanner, SuccessBanner } from "../../../components/Banner";
 import localData from "../../../utils/localData";
 import MediaModal from "../../../components/media/MediaModal";
-import { useRouter } from "next/router";
-import Head from 'next/head';
-import { MediaContext } from "../../../context/Media";
-import { ThemeContext } from '../../../context/Theme';
+
 
 import YouTubeEmbed from '../../../components/embed/YoutubeEmbed';
 
@@ -34,7 +39,6 @@ export default function CreatePostPage() {
   const [featuredImage, setFeaturedImage] = useState(localData("featuredImage") || "");
 
   const resetFields = () => {
-    console.log("resetting fields");
     localStorage.removeItem("postTitle");
     localStorage.removeItem("postContent");
     localStorage.removeItem("categories");
@@ -64,7 +68,7 @@ export default function CreatePostPage() {
         console.log(res.data);
         setSuccess(res.data.message);
         resetFields();
-        router.push("/admin/posts");
+        router.push("/user/posts");
       })
       .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
   };
@@ -84,7 +88,7 @@ export default function CreatePostPage() {
         </title>
       </Head>
       {/* End of Head */}
-      <AdminLayout>
+      <UserLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-2/3">
@@ -178,7 +182,7 @@ export default function CreatePostPage() {
             {/* publish button end */}
           </div>
         </div>
-      </AdminLayout>
+      </UserLayout>
     </>
   );
 }

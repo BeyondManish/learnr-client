@@ -1,5 +1,5 @@
 import Stats from '../../components/dashboard/Stats';
-import AdminLayout from "../../components/layout/AdminLayout";
+import UserLayout from "../../components/layout/UserLayout";
 import PostTable from '../../components/table/PostTable';
 import { useContext, useEffect, useState } from 'react';
 import { PostContext } from '../../context/Post';
@@ -16,7 +16,6 @@ export default function DashboardPage() {
 
   useEffect(async () => {
     await loadStatsData().then(({ data }) => {
-      console.log(data);
       setStats(data);
     });
   }, []);
@@ -40,11 +39,11 @@ export default function DashboardPage() {
 
   const editPost = async (slug) => {
     console.log(slug);
-    router.push(`/admin/posts/edit/${slug}`);
+    router.push(`/user/posts/edit/${slug}`);
   };
   return (
     <>
-      <AdminLayout>
+      <UserLayout>
         <div>
           <Stats stats={stats} />
         </div>
@@ -52,7 +51,7 @@ export default function DashboardPage() {
           <h2 className="my-8 text-lg font-medium">Recent Posts</h2>
           <PostTable onDelete={deletePost} onEdit={editPost} postData={postData} />
         </div>
-      </AdminLayout>
+      </UserLayout>
     </>
   );
 }
