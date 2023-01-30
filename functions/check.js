@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../utils/axios';
 
 export const createAdmin = async ({ firstname, lastname, username, email, password }) => {
   const response = await axios.post('/auth/create-admin', { firstname, lastname, username, email, password });

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../utils/axios';
 
 export const loadCategories = async () => {
   const response = await axios.get('/categories');
@@ -17,7 +17,7 @@ export const loadPosts = async () => {
 };
 
 export const loadPost = async (slug) => {
-  const response = await axios.get(`${process.env.API}/post/${slug}`);
+  const response = await axios.get(`/post/${slug}`);
   return response.data;
 };
 

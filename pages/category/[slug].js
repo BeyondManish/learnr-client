@@ -35,7 +35,6 @@ export default function CategoryPostPage({ posts, category }) {
 
 export const getServerSideProps = async ({ params }) => {
   const { data } = await loadCategoryPost(params.slug);
-  console.log(data);
   return {
     props: {
       posts: data.posts,
