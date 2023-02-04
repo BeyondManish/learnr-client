@@ -1,8 +1,8 @@
-import axios from '../../utils/axios';
 import MainLayout from '../../components/layout/MainLayout';
 import MainNav from '../../components/layout/MainNav';
 import Image from 'next/image';
 import Card from '../../components/posts/Card';
+import { loadUserPost, loadUser } from '../../functions/load';
 
 export default function AuthorPage({ user, posts }) {
   return (
@@ -23,15 +23,16 @@ export default function AuthorPage({ user, posts }) {
                 />
               </div>
 
-              <h1 className='text-2xl font-bold'>{user?.username}</h1>
-              <p className='text-gray-500 dark:text-gray-300'>{user?.email}</p>
+              <h2 className='text-2xl font-bold'>@{user?.username}</h2>
+              {/* TODO: Add the bio field */}
+              <p className='text-gray-500 dark:text-gray-300'>BIO will be added soon.</p>
             </div>
             <div className='w-full my-4'>
               <h2 className='mb-2 text-xl font-bold'>Posts by {user.firstname}</h2>
-              {posts.length > 0 ?
+              {posts?.length > 0 ?
                 posts.map((post) => (
                   <Card key={post.slug} post={post} />
-                )) : <p>No posts yet</p>
+                )) : <p>{user.firstname} has no post yet.</p>
               }
             </div>
           </div>
@@ -43,10 +44,10 @@ export default function AuthorPage({ user, posts }) {
 
 export const getServerSideProps = async ({ params }) => {
   const { username } = params;
-  const user = await axios.get(`/user/${username}`).then(res => res.data.data.user).catch(err => null);
-  const posts = await axios.get(`/${username}/posts`).then(res => res.data.data.posts).catch(err => null);
+  const user = await loadUser(username).then((data) => data.user).catch(err => null);
+  // const posts = await axios.get(`/${username}/posts`).then(({ data }) => data.posts).catch(err => null);
+  const posts = await loadUserPost(username).then((data) => data.posts).catch(err => null);
   console.log(posts);
-  console.log(user);
   if (!user) {
     return {
       notFound: true,
@@ -54,8 +55,7 @@ export const getServerSideProps = async ({ params }) => {
   }
   return {
     props: {
-      user: user,
-      posts: posts,
+      user, posts
     },
   };
 };
