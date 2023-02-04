@@ -1,23 +1,34 @@
 import Head from "next/head";
-import UserLayout from "../../../components/layout/UserLayout";
-import { useEffect, useContext } from "react";
-import { PostContext } from "../../../context/Post";
-import { loadPosts } from "../../../functions/load";
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useContext, useEffect, useState } from 'react';
 import axios from "../../../utils/axios";
 import { useRouter } from 'next/router';
-import PostTable from '../../../components/table/PostTable';
 
+import UserLayout from "../../../components/layout/UserLayout";
+import { loadUserPost } from '../../../functions/load';
+import { AuthContext } from '../../../context/Auth';
+import EmptyCard from '../../../components/cards/Empty';
+import PostCard from '../../../components/posts/Card';
 
 
 export default function PostPage() {
   const router = useRouter();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1
+  });
+  const [auth, setAuth] = useContext(AuthContext);
 
-  const [postData, setPostData] = useContext(PostContext);
+
   useEffect(() => {
-    loadPosts().then(({ data }) => {
-      setPostData(prev => ({ ...prev, posts: data.posts }));
-      console.log(postData);
+    loadUserPost(auth.user.username).then(({ posts }) => {
+      console.log(posts);
+      setPosts(posts.concat(...posts));
+      setLoading(false);
     });
+    console.log(auth.user.username);
   }, []);
 
   const deletePost = async (id) => {
@@ -30,7 +41,15 @@ export default function PostPage() {
 
   const editPost = async (slug) => {
     console.log(slug);
-    router.push(`/admin/posts/edit/${slug}`);
+    router.push(`/user/posts/edit/${slug}`);
+  };
+
+  const loadMore = () => {
+    loadPosts(pagination.page + 1).then((data) => {
+      // add the post to the array
+      setPosts(prev => prev.concat(data.posts));
+      setPagination({ page: data.page, totalPages: data.totalPages });
+    }).catch(err => console.log(err));
   };
 
   return (
@@ -43,7 +62,28 @@ export default function PostPage() {
       <UserLayout>
         <div>
           <h2 className="mb-4 text-lg font-medium">All Posts</h2>
-          <PostTable postData={postData} onDelete={deletePost} onEdit={editPost} />
+        </div>
+        <div>
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={loadMore}
+            hasMore={pagination.page < pagination.totalPages}
+            endMessage={<EmptyCard text={"Phew!!! End of the universe"} />}
+            loader={<EmptyCard text={"Loading..."} />}
+          >
+            {loading ? ("") : (
+              posts.length > 0 ? (
+                <div className='w-full h-full text-gray-900 dark:text-gray-100'>
+                  {
+                    posts.map((post) => (
+                      <PostCard key={post.slug} post={post} showAuthor={false} />
+                    ))
+                  }
+                </div>
+              ) :
+                (<EmptyCard text={"Wow, Such Empty!"} />))
+            }
+          </InfiniteScroll>
         </div>
       </UserLayout>
     </>

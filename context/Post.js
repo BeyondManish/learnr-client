@@ -5,7 +5,7 @@ export const PostContext = createContext();
 export default function PostDataProvider({ children }) {
   const [postData, setPostData] = useState({
     posts: [],
-    categories: [],
+    tags: [],
   });
 
   return (

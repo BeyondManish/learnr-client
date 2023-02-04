@@ -31,17 +31,15 @@ export default function MainNav({ showSearch = false }) {
   }, [auth?.token]);
 
 
-  // some default nav links
 
   const navigation = [
     { name: 'Dashboard', href: '/#', current: true },
   ];
   const userNavigation = [
-    { name: 'Your Profile', href: `/` },
+    { name: 'Your Profile', href: `/${user?.username}` },
+    { name: 'Dashboard', href: '/user/dashboard' },
     { name: 'Log out', href: '/logout' },
   ];
-
-
 
   return (
     <>
@@ -165,7 +163,7 @@ export default function MainNav({ showSearch = false }) {
                 }
               </div>
             </div>
-
+            {/* Mobile navigation */}
             <Popover.Panel as="nav" className="lg:hidden" aria-label="Global">
               <div className="max-w-3xl px-2 pt-2 pb-3 mx-auto space-y-1 sm:px-4">
                 {navigation.map((item) => (

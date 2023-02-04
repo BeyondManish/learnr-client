@@ -1,23 +1,37 @@
 import Head from 'next/head';
-import Card from '../components/posts/Card';
-import { useState, useEffect, useContext } from "react";
-import { PostContext } from "../context/Post";
-import { loadCategories, loadPosts } from '../functions/load';
+import PostCard from '../components/posts/Card';
+import { useState, useEffect } from "react";
 import HomeLayout from '../components/layout/HomeLayout';
 import EmptyCard from '../components/cards/Empty';
+import { loadPosts } from '../functions/load';
+import { Button } from '../components/Buttons';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function Home() {
 
-  const [postData, setPostData] = useContext(PostContext);
   const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    totalPages: 1,
+  });
 
   useEffect(() => {
-    loadPosts().then(({ data }) => {
-      setPostData(prev => ({ ...prev, posts: data.posts }));
+    loadPosts().then((data) => {
+      setPosts(data.posts);
+      setPagination({ page: data.page, totalPages: data.totalPages });
       setLoading(false);
-    });
-    loadCategories().then(({ data }) => setPostData(prev => ({ ...prev, categories: data.categories })));
+    }
+    ).catch((err) => console.log(err));
   }, []);
+
+  const loadMore = () => {
+    loadPosts(pagination.page + 1).then((data) => {
+      // add the post to the array
+      setPosts(prev => prev.concat(data.posts));
+      setPagination({ page: data.page, totalPages: data.totalPages });
+    }).catch(err => console.log(err));
+  };
 
   return (
     <div>
@@ -27,20 +41,29 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomeLayout showSearch={true}>
-        <div className='w-full'>
-          {loading ? ("") : (
-            postData.posts.length > 0 && postData.categories.length > 0 ? (
-              <div className='w-full h-full text-gray-900 md:px-4 dark:text-gray-100'>
-                {
-                  postData.posts.map((post) => (
-                    <Card key={post.slug} post={post} />
-                  ))
-                }
-              </div>
-            ) :
-              (<EmptyCard text={"Wow, Such Empty!"} />))
-          }
+        <div className='md:px-4'>
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={loadMore}
+            hasMore={pagination.page < pagination.totalPages}
+            endMessage={<EmptyCard text={"Phew!!! End of the universe"} />}
+            loader={<EmptyCard text={"Loading..."} />}
+          >
+            {loading ? ("") : (
+              posts.length > 0 ? (
+                <div className='w-full h-full text-gray-900 dark:text-gray-100'>
+                  {
+                    posts.map((post) => (
+                      <PostCard key={post.slug} post={post} />
+                    ))
+                  }
+                </div>
+              ) :
+                (<EmptyCard text={"Wow, Such Empty!"} />))
+            }
+          </InfiniteScroll>
         </div>
+
       </HomeLayout>
     </div >
   );

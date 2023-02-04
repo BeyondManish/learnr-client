@@ -1,3 +1,4 @@
+import TagCard from '../cards/Tag';
 import MainLayout from './MainLayout';
 import RecommendationSideBar from './RecommendationSidebar';
 import SideNav from './SideNav';

@@ -12,11 +12,10 @@ import { ThemeContext } from '../../../context/Theme';
 
 // components
 import UserLayout from "../../../components/layout/UserLayout";
-import MultiSelect from "../../../components/forms/MultiSelect";
 import { ArrowUpTrayIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../../components/Buttons";
 import { uploadImage } from "../../../functions/upload";
-import { loadCategories } from "../../../functions/load";
+import { loadTags } from "../../../functions/load";
 import { ErrorBanner, SuccessBanner } from "../../../components/Banner";
 import localData from "../../../utils/localData";
 import MediaModal from "../../../components/media/MediaModal";
@@ -27,13 +26,11 @@ import YouTubeEmbed from '../../../components/embed/YoutubeEmbed';
 export default function CreatePostPage() {
   const [theme, setTheme] = useContext(ThemeContext);
   const [media, setMedia] = useContext(MediaContext);
-  console.log(theme);
   const router = useRouter();
 
   const [title, setTitle] = useState(localData('postTitle') || "");
   const [content, setContent] = useState(localData('postContent') || "");
-  const [categoriesValue, setCategoriesValue] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState(localData("categories") || []);
+  const [tags, setTags] = useState(localData("tags") || []);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [featuredImage, setFeaturedImage] = useState(localData("featuredImage") || "");
@@ -47,12 +44,6 @@ export default function CreatePostPage() {
   };
 
   useEffect(() => {
-    loadCategories().then((res) => {
-      setCategoriesValue(res.data.categories);
-    });
-  }, []);
-
-  useEffect(() => {
     if (media.selected) {
       localStorage.setItem("postFeaturedImage", JSON.stringify(media.selected));
     }
@@ -60,10 +51,9 @@ export default function CreatePostPage() {
 
   // publish post
   const publishPost = async () => {
-    const categories = localData('categories') || [];
     featuredImage = localData('postFeaturedImage') || "";
-    console.table({ title, content, categories, featuredImage: featuredImage._id, isPublished: true });
-    axios.post('/posts/create-post', { title, content, categories: categories, isPublished: true, featuredImage: featuredImage._id || "" })
+    const tagsArray = tags.split(",").map(tag => tag.trim().toLowerCase());
+    axios.post('/posts/create', { title, content, tags: tagsArray, isPublished: true, featuredImage: featuredImage._id || "" })
       .then(res => {
         console.log(res.data);
         setSuccess(res.data.message);
@@ -149,11 +139,22 @@ export default function CreatePostPage() {
             </div>
           </div>
           <div className="w-full mt-5 lg:ml-8 lg:w-1/3">
-            {/* categories multiselect */}
             <div className="mb-4">
-              <MultiSelect label="Categories" values={categoriesValue} selected={selectedCategories} />
+              <label htmlFor="tags" className="text-sm">
+                Tags
+              </label>
+              <input
+                type="text"
+                value={tags}
+                onChange={(e) => {
+                  setTags(e.target.value);
+                }}
+                name="tags"
+                id="tags"
+                className="block w-full text-lg border-gray-300 rounded-md shadow-sm dark:bg-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="Machine Learning, Marketing, ... (max 4)" required
+              />
             </div>
-            {/* categories multiselect end */}
             {/* image upload preview */}
             {
               (media?.selected || featuredImage) && (

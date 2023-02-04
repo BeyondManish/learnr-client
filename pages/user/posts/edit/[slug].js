@@ -105,7 +105,7 @@ export default function EditPostPage({ post }) {
             </div>
           </div>
           <div className="w-full mt-5 lg:ml-8 lg:w-2/5">
-            {/* tags multiselect */}
+            {/* tags */}
             <div className="mb-4">
               <label htmlFor="tags" className="text-sm">
                 Tags
@@ -122,7 +122,7 @@ export default function EditPostPage({ post }) {
                 placeholder="Machine Learning, Marketing, ... (max 4)" required
               />
             </div>
-            {/* tags multiselect end */}
+            {/* tags end */}
             {/* image upload preview */}
             {
               (media?.selected || postFeaturedImage) && (

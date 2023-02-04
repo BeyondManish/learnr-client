@@ -36,7 +36,6 @@ export default function UserLayout({ showSearch, children }) {
   const [auth, setAuth] = useContext(AuthContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [current, setCurrent] = useState('Dashboard');
   const router = useRouter();
 
   // protect page

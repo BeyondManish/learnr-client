@@ -1,18 +1,17 @@
 import axios from '../utils/axios';
 
-export const loadCategories = async () => {
-  const response = await axios.get('/categories');
+export const loadTags = async () => {
+  const response = await axios.get('/tags');
   return response.data;
 };
 
-export const loadCategoryPost = async (slug) => {
-  const response = await axios.get(`/category/${slug}`);
-  console.log(response.data);
+export const loadTagPosts = async (slug) => {
+  const response = await axios.get(`/tag/${slug}`);
   return response.data;
 };
 
-export const loadPosts = async () => {
-  const response = await axios.get('/posts');
+export const loadPosts = async (page = 1) => {
+  const response = await axios.get(`/posts?page=${page}`);
   return response.data;
 };
 

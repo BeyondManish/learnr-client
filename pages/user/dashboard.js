@@ -11,19 +11,11 @@ export default function DashboardPage() {
 
   const router = useRouter();
 
-  const [postData, setPostData] = useContext(PostContext);
   const [stats, setStats] = useState([]);
 
   useEffect(async () => {
     await loadStatsData().then(({ data }) => {
       setStats(data);
-    });
-  }, []);
-
-
-  useEffect(async () => {
-    await loadPosts().then(({ data }) => {
-      setPostData(prev => ({ ...prev, posts: data.posts }));
     });
   }, []);
 
@@ -49,7 +41,6 @@ export default function DashboardPage() {
         </div>
         <div>
           <h2 className="my-8 text-lg font-medium">Recent Posts</h2>
-          <PostTable onDelete={deletePost} onEdit={editPost} postData={postData} />
         </div>
       </UserLayout>
     </>

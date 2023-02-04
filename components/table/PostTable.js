@@ -3,7 +3,7 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { Badge } from "../Badges";
 
 export default function PostTable({ postData, onDelete, onEdit }) {
-  const headings = ["Title", "Author", "Categories", "Date", "Actions"];
+  const headings = ["Title", "Date", "Actions"];
 
   return (
     <div className="overflow-y-auto border border-gray-300 dark:border-gray-900 md:rounded-lg" >
@@ -20,11 +20,9 @@ export default function PostTable({ postData, onDelete, onEdit }) {
           {
             postData.posts.map((post) => (
               <tr key={post.slug} className="">
-                <td className="px-4 py-4"><a className='hover:underline' href={`/admin/posts/edit/${post.slug}`}>
+                <td className="px-4 py-4"><a className='hover:underline' href={`/user/posts/edit/${post.slug}`}>
                   {post.title}
                 </a></td>
-                <td>{post.author.firstname + " " + post.author.lastname}</td>
-                <td>{post.categories.map((category) => (<Badge className="mr-1" key={category.slug} title={category.name} />))}</td>
                 <td>{dayjs(post.createdAt).format("MMM D, YYYY")}</td>
                 <td className="flex items-center px-4 py-4">
                   <div>
