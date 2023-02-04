@@ -46,7 +46,7 @@ export default function Home() {
             dataLength={posts.length}
             next={loadMore}
             hasMore={pagination.page < pagination.totalPages}
-            endMessage={<EmptyCard text={"Phew!!! End of the universe"} />}
+            endMessage={!loading ? <EmptyCard text={"Phew!!! End of the universe"} /> : null}
             loader={<EmptyCard text={"Loading..."} />}
           >
             {loading ? ("") : (
