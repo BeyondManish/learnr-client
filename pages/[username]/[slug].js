@@ -1,14 +1,21 @@
-import Content from "../../components/posts/Content";
+// lib imports
+import Head from 'next/head';
+import axios from "../../utils/axios";
+import Link from 'next/link';
+import dayjs from 'dayjs';
+import { useState, useContext, useEffect } from 'react';
+
+// component imports
 import MainLayout from "../../components/layout/MainLayout";
 import CommentForm from "../../components/forms/CommentForm";
 import { AuthContext } from '../../context/Auth';
-import { useState, useContext, useEffect } from 'react';
-import axios from "../../utils/axios";
-import Head from 'next/head';
-import Link from 'next/link';
 import Avatar from '../../components/Avatar';
 import { loadComments } from '../../functions/load';
-import dayjs from 'dayjs';
+import dynamic from 'next/dynamic';
+
+// dynamic import
+const Content = dynamic(() => import('../../components/posts/Content'), { loading: () => <p>Loading...</p> });
+
 
 export default function BlogPost({ post }) {
   const [auth, setAuth] = useContext(AuthContext);
