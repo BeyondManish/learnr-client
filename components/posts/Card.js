@@ -5,7 +5,6 @@ import dayjs from 'dayjs';
 import classNames from '../../utils/classNames';
 
 export default function PostCard({ post, showAuthor = true, className }) {
-  post.author === null ? post.author = { username: "anonymous", firstname: "Anonymous", lastname: null, photo: null } : post.author = post.author;
   return (
     <div className={classNames("w-full mb-4 overflow-hidden bg-white border border-gray-300 md:rounded-lg dark:border-gray-700 dark:bg-gray-900", className)}>
       {
