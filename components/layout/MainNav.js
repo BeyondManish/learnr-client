@@ -67,7 +67,7 @@ export default function MainNav({ showSearch = false }) {
                 {/* Search begins */}
                 {
                   showSearch && (
-                    <div className="flex-1 min-w-0 lg:px-0 xl:col-span-6">
+                    <div className="flex-1 max-w-4xl min-w-0 lg:px-0 xl:col-span-6">
                       <div className="flex items-center px-6 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
                         <Search />
                       </div>
