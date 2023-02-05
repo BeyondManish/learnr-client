@@ -36,7 +36,7 @@ export default function Content({ post }) {
           {post.title}
         </h1>
         <div className="my-3">
-          {post.tags.map(item => (<Link key={item.slug} href={`/tag/${item.slug}`}><a><span className="mr-1.5"><Badge title={item.name} /></span></a></Link>))}
+          {post.tags.map(item => (<Link key={item.slug} href={`/tag/${item.slug}`}><a><span className="mr-1.5"><Badge title={item.name.toUpperCase()} /></span></a></Link>))}
         </div>
       </div>
       <Editor dark={theme === "dark" ? true : false} defaultValue={post.content} readOnly={true} readOnlyWriteCheckboxes={true} embeds={[
