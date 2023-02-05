@@ -23,9 +23,9 @@ export default function PostPage() {
 
 
   useEffect(() => {
-    loadUserPost(auth.user.username).then(({ posts }) => {
-      console.log(posts);
-      setPosts(posts.concat(...posts));
+    loadUserPost(auth.user.username).then((data) => {
+      setPosts(posts.concat(...data.posts));
+      setPagination({ page: data.page, totalPages: data.totalPages });
       setLoading(false);
     });
     console.log(auth.user.username);
@@ -76,7 +76,7 @@ export default function PostPage() {
                 <div className='w-full h-full text-gray-900 dark:text-gray-100'>
                   {
                     posts.map((post) => (
-                      <PostCard key={post.slug} post={post} showAuthor={false} />
+                      <PostCard key={post.slug} post={post} />
                     ))
                   }
                 </div>

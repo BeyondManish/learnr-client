@@ -119,7 +119,8 @@ export default function EditPostPage({ post }) {
                 name="tags"
                 id="tags"
                 className="block w-full text-lg border-gray-300 rounded-md shadow-sm dark:bg-gray-900 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Machine Learning, Marketing, ... (max 4)" required
+                placeholder="Machine Learning, Marketing, ... (max 4)"
+                required={true}
               />
             </div>
             {/* tags end */}
