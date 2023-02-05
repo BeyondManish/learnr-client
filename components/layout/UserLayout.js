@@ -22,6 +22,7 @@ import Search from '../forms/Search';
 import { useRouter } from 'next/router';
 import Avatar from "../Avatar";
 import { loadCurrentUser } from '../../functions/load';
+import { NextSeo } from 'next-seo';
 
 const navigation = [
   { name: 'Dashboard', href: '/user/dashboard', icon: HomeIcon },
@@ -63,6 +64,7 @@ export default function UserLayout({ showSearch, children }) {
           :
           (
             <div>
+              <NextSeo noindex={true} />
               <Transition.Root show={sidebarOpen} as={Fragment}>
                 <Dialog as="div" className="fixed inset-0 z-20 flex md:hidden dark:bg-gray-900" onClose={setSidebarOpen}>
                   <Transition.Child
