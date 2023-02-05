@@ -52,7 +52,7 @@ export default function CreatePostPage() {
   // publish post
   const publishPost = async () => {
     featuredImage = localData('postFeaturedImage') || "";
-    const tagsArray = tags.split(",").map(tag => tag.trim().toLowerCase());
+    const tagsArray = tags?.split(",").map(tag => tag.trim().toLowerCase());
     axios.post('/posts/create', { title, content, tags: tagsArray, isPublished: true, featuredImage: featuredImage._id || "" })
       .then(res => {
         console.log(res.data);
