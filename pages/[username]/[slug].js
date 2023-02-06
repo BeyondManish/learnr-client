@@ -14,7 +14,7 @@ import { loadComments } from '../../functions/load';
 import dynamic from 'next/dynamic';
 
 // dynamic import
-const Content = dynamic(() => import('../../components/posts/Content'), { loading: () => <p>Loading...</p> });
+const Content = dynamic(() => import('../../components/post/Content'), { loading: () => <p>Loading...</p> });
 
 
 export default function BlogPost({ post }) {

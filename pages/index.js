@@ -1,10 +1,9 @@
 import Head from 'next/head';
-import PostCard from '../components/posts/Card';
+import PostCard from '../components/cards/PostCard';
 import { useState, useEffect } from "react";
 import HomeLayout from '../components/layout/HomeLayout';
 import EmptyCard from '../components/cards/Empty';
 import { loadPosts } from '../functions/load';
-import { Button } from '../components/Buttons';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function Home() {

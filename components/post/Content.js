@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { ThemeContext } from '../../context/Theme';
 import { useContext } from 'react';
 
-import YouTubeEmbed from '../../components/embed/YoutubeEmbed';
+import YouTubeEmbed from '../embed/YoutubeEmbed';
 
 export default function Content({ post }) {
   const [theme, toggleTheme] = useContext(ThemeContext);

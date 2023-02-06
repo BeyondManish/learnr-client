@@ -8,8 +8,8 @@ import UserLayout from "../../../components/layout/UserLayout";
 import { loadUserPost } from '../../../functions/load';
 import { AuthContext } from '../../../context/Auth';
 import EmptyCard from '../../../components/cards/Empty';
-import PostCard from '../../../components/posts/Card';
-
+import DashboardPostCard from '../../../components/cards/DashboardPostCard';
+import { NextSeo } from 'next-seo';
 
 export default function PostPage() {
   const router = useRouter();
@@ -55,9 +55,9 @@ export default function PostPage() {
   return (
     <>
       <Head>
-        <title>
-          All Posts | Learnr Admin
-        </title>
+        <NextSeo
+          title="Posts"
+        />
       </Head>
       <UserLayout>
         <div>
@@ -76,7 +76,7 @@ export default function PostPage() {
                 <div className='w-full h-full text-gray-900 dark:text-gray-100'>
                   {
                     posts.map((post) => (
-                      <PostCard key={post.slug} post={post} />
+                      <DashboardPostCard key={post.slug} post={post} />
                     ))
                   }
                 </div>
