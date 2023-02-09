@@ -31,18 +31,13 @@ export const loadCurrentUser = async () => {
 };
 
 // load user post
-export const loadUserPost = async (username) => {
-  const response = await axios.get(`/${username}/posts`);
+export const loadUserPost = async (username, page = 1) => {
+  const response = await axios.get(`/${username}/posts?page=${page}`);
   return response.data;
 };
 
 export const loadUserMedia = async (username) => {
   const response = await axios.get(`/${username}/files`);
-  return response.data;
-};
-
-export const loadUserCategory = async (username) => {
-  const response = await axios.get(`/${username}/categories`);
   return response.data;
 };
 

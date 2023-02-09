@@ -23,7 +23,7 @@ export default function PostPage() {
 
 
   useEffect(() => {
-    loadUserPost(auth.user.username).then((data) => {
+    loadUserPost(auth.user.username, pagination.page).then((data) => {
       setPosts(posts.concat(...data.posts));
       setPagination({ page: data.page, totalPages: data.totalPages });
       setLoading(false);
@@ -45,7 +45,7 @@ export default function PostPage() {
   };
 
   const loadMore = () => {
-    loadPosts(pagination.page + 1).then((data) => {
+    loadUserPost(auth.user.username, pagination.page + 1).then((data) => {
       // add the post to the array
       setPosts(prev => prev.concat(data.posts));
       setPagination({ page: data.page, totalPages: data.totalPages });
@@ -76,7 +76,7 @@ export default function PostPage() {
                 <div className='w-full h-full text-gray-900 dark:text-gray-100'>
                   {
                     posts.map((post) => (
-                      <DashboardPostCard key={post.slug} post={post} />
+                      <DashboardPostCard key={post.slug} post={post} onDelete={deletePost} onEdit={editPost} />
                     ))
                   }
                 </div>
