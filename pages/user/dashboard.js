@@ -1,4 +1,4 @@
-import Stats from '../../components/dashboard/Stats';
+import Stats from '../../components/cards/Stats';
 import UserLayout from "../../components/layout/UserLayout";
 import PostTable from '../../components/table/PostTable';
 import { useContext, useEffect, useState } from 'react';

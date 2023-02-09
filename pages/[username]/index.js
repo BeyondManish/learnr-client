@@ -1,7 +1,7 @@
 import MainLayout from '../../components/layout/MainLayout';
 import MainNav from '../../components/layout/MainNav';
 import Image from 'next/image';
-import Card from '../../components/posts/Card';
+import PostCard from '../../components/cards/PostCard';
 import { loadUserPost, loadUser } from '../../functions/load';
 
 export default function AuthorPage({ user, posts }) {
@@ -31,7 +31,7 @@ export default function AuthorPage({ user, posts }) {
               <h2 className='mb-2 text-xl font-bold'>Posts by {user.firstname}</h2>
               {posts?.length > 0 ?
                 posts.map((post) => (
-                  <Card key={post.slug} post={post} />
+                  <PostCard key={post.slug} post={post} />
                 )) : <p>{user.firstname} has no post yet.</p>
               }
             </div>

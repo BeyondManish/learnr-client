@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "../../../../utils/axios";
-import Head from 'next/head';
 import { useRouter } from "next/router";
 
 // contexts
@@ -18,6 +17,7 @@ import { uploadImage } from "../../../../functions/upload";
 import { loadPost } from "../../../../functions/load";
 import { ErrorBanner, SuccessBanner } from "../../../../components/Banner";
 import MediaModal from "../../../../components/media/MediaModal";
+import { NextSeo } from 'next-seo';
 
 export default function EditPostPage({ post }) {
   const [theme, setTheme] = useContext(ThemeContext);
@@ -26,7 +26,7 @@ export default function EditPostPage({ post }) {
 
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [tags, setTags] = useState(post.tags || "");
+  const [tags, setTags] = useState(post.tags.map((tag) => tag.name).join(", ") || "");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [postFeaturedImage, setPostFeaturedImage] = useState(post.featuredImage);
@@ -34,15 +34,14 @@ export default function EditPostPage({ post }) {
   // publish post
   const editPost = async () => {
     // convert the tags into array
-    const tagsArray = tags.split(",").map(tag => tag.trim());
+    const tagsArray = tags?.split(",").map(tag => tag.trim().toLowerCase());
 
-    console.table({ title, content, tags: tagsArray, featuredImage: media.selected?._id || postFeaturedImage?._id, isPublished: true });
-    // axios.put(`/post/edit/${post._id}`, { title, content, tags: tags, isPublished: true, featuredImage: media.selected?._id || postFeaturedImage?._id || "" })
-    //   .then(res => {
-    //     setSuccess(res.data.message);
-    //     router.push("/user/posts");
-    //   })
-    //   .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
+    axios.put(`/post/edit/${post._id}`, { title, content, tags: tagsArray, isPublished: true, featuredImage: media.selected?._id || postFeaturedImage?._id || "" })
+      .then(res => {
+        setSuccess(res.data.message);
+        router.push("/user/posts");
+      })
+      .catch(err => { console.log(err); setError(err.response.data.message || err.response.data.errors[0]); });
   };
 
   // save post as draft
@@ -53,13 +52,10 @@ export default function EditPostPage({ post }) {
 
   return (
     <>
-      {/* Head for the page */}
-      <Head>
-        <title>
-          Edit Post | Learnr
-        </title>
-      </Head>
-      {/* End of Head */}
+      <NextSeo
+        title="Edit Post"
+        description="Edit your post"
+      />
       <UserLayout>
         <MediaModal visible={media.showMediaModal} onClick={() => setMedia({ ...media, showMediaModal: !media.showMediaModal })} />
         <div className="flex flex-col lg:flex-row">

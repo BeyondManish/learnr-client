@@ -1,5 +1,5 @@
 import MainLayout from '../../components/layout/MainLayout';
-import Card from '../../components/posts/Card';
+import PostCard from '../../components/cards/PostCard';
 import { loadTagPosts } from '../../functions/load';
 import { NextSeo } from 'next-seo';
 
@@ -7,7 +7,7 @@ export default function TagPostsPage({ posts, tag }) {
   return (
     <div>
       <NextSeo
-        title=''
+        title='All tags'
       />
       <MainLayout>
         {
@@ -18,7 +18,7 @@ export default function TagPostsPage({ posts, tag }) {
 
                 {
                   posts.map((post) => (
-                    <Card key={post.slug} post={post} />
+                    <PostCard key={post.slug} post={post} />
                   ))
                 }
               </div>
